@@ -1,8 +1,5 @@
-﻿using System.Data.Entity;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity;
 
 namespace TelesalesSchedule.Models
 {
@@ -12,6 +9,12 @@ namespace TelesalesSchedule.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
+
+        public virtual DbSet<Employee> Employees { get; set; }
+
+        public virtual DbSet<Schedule> Schedules { get; set; }
+
+        public virtual DbSet<Computer> Computers { get; set; }
 
         public static TelesalesScheduleDbContext Create()
         {

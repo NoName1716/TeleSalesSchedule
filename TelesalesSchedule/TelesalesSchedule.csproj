@@ -206,7 +206,10 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\EditUserViewModel.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\Computer.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\Schedule.cs" />
     <Compile Include="Models\TelesalesScheduleDbContext.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

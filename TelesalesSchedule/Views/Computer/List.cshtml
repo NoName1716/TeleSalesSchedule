@@ -1,0 +1,39 @@
+﻿@model List<TelesalesSchedule.Models.Computer>
+
+@{ 
+    ViewBag.Title = "List";
+}
+
+<div class="container">
+    <div class="well">
+        <h2>Computers</h2>
+
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>ComputerName</th>
+                    <th>IpAddress</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var computer in Model)
+                {
+                    <tr>
+                        <td>@computer.Name</td>
+                        <td>@computer.ComputerName</td>
+                        <td>@computer.IpAddress</td>
+                        <td>@computer.Location</td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Computer", new { @id = computer.Id }, null)
+                            @Html.ActionLink("Delete", "Delete", "Computer", new { @id = computer.Id }, null)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

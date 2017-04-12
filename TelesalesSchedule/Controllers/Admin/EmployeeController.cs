@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using TelesalesSchedule.Models;
 
 namespace TelesalesSchedule.Controllers.Admin
@@ -49,11 +52,103 @@ namespace TelesalesSchedule.Controllers.Admin
                     db.Employees.Add(emp);
                     db.SaveChanges();
                 }
-                
+
             }
 
             return RedirectToAction("Index", "Home");
         }
 
+        //
+        // GET: Employee/List
+        public ActionResult List()
+        {
+            using (var context = new TelesalesScheduleDbContext())
+            {
+                var employees = context.Employees
+                    .Include(e => e.Manager)
+                    .ToList();
+
+                return View(employees);
+            }
+        }
+
+        //
+        // GET: Employee/Edit
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var context = new TelesalesScheduleDbContext())
+            {
+                // Get employee from database
+                var employee = context.Employees
+                    .Where(e => e.Id == id)
+                    .First();
+
+                // Check if employee exists
+                if (employee == null)
+                {
+                    return HttpNotFound();
+                }
+
+                var viewModel = new EditEmployeeViewModel();
+                viewModel.Id = employee.Id;
+                viewModel.FullName = employee.FullName;
+                viewModel.UserName = employee.UserName;
+                viewModel.ManagerId = employee.ManagerId;
+                viewModel.ManagerFullName = employee.Manager == null ? null : employee.Manager.FullName;
+                viewModel.BirthDay = employee.BirthDay;
+                viewModel.FullTimeAgent = employee.FullTimeAgent;
+                viewModel.SaveDeskAgent = employee.SaveDeskAgent;
+                viewModel.SeniorSpecialist = employee.SeniorSpecialist;
+                viewModel.IsDeleted = employee.IsDeleted;
+
+                if (employee.Manager != null)
+                {
+                    viewModel.ManagerFullName = employee.Manager.FullName;
+                }
+
+                return View(viewModel);
+            }
+        }
+
+        //
+        // POST: Employee/Edit
+        [HttpPost]
+        public ActionResult Edit(EditEmployeeViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var context = new TelesalesScheduleDbContext())
+                {
+                    var employee = context.Employees
+                        .FirstOrDefault(e => e.Id == viewModel.Id);
+
+                    if (employee == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    employee.FullName = viewModel.FullName;
+                    employee.UserName = viewModel.UserName;
+                    employee.Manager = context.Employees.FirstOrDefault(m => m.FullName == viewModel.ManagerFullName);
+                    employee.BirthDay = viewModel.BirthDay;
+                    employee.FullTimeAgent = viewModel.FullTimeAgent;
+                    employee.SaveDeskAgent = viewModel.SaveDeskAgent;
+                    employee.SeniorSpecialist = viewModel.SeniorSpecialist;
+                    employee.IsDeleted = viewModel.IsDeleted;                
+
+                    context.Entry(employee).State = EntityState.Modified;
+                    context.SaveChanges();
+
+                    return RedirectToAction("List");
+                }
+            }
+
+            return View(viewModel); 
+        }
     }
 }

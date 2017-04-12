@@ -24,6 +24,8 @@ namespace TelesalesSchedule.Models
 
         public bool SeniorSpecialist { get; set; }
 
+        public int? ManagerId { get; set; }
+
         public Employee Manager { get; set; }
         
         public bool IsDeleted { get; set; }

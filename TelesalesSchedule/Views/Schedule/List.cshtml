@@ -1,0 +1,36 @@
+﻿@model List<TelesalesSchedule.Models.Schedule>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<div class="container">
+    <div class="well">
+        <h2>Schedules</h2>
+
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>StartDate</th>
+                    <th>EndDate</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var schedule in Model)
+                {
+                    <tr>
+                        <td>@schedule.Id</td>
+                        <td>@schedule.StartDate</td>
+                        <td>@schedule.EndDate</td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Computer", new { @id = schedule.Id }, null)
+                            @Html.ActionLink("Delete", "Delete", "Computer", new { @id = schedule.Id }, null)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

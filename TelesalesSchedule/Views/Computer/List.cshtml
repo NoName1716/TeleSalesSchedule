@@ -15,6 +15,7 @@
                     <th>ComputerName</th>
                     <th>IpAddress</th>
                     <th>Location</th>
+                    <th>IsWorking</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -27,6 +28,7 @@
                         <td>@computer.ComputerName</td>
                         <td>@computer.IpAddress</td>
                         <td>@computer.Location</td>
+                        <td>@computer.IsWorking</td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", "Computer", new { @id = computer.Id }, null)
                             @Html.ActionLink("Delete", "Delete", "Computer", new { @id = computer.Id }, null)

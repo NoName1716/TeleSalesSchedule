@@ -1,0 +1,41 @@
+﻿@model TelesalesSchedule.Models.Schedule
+@{
+    ViewBag.Title = "Create";
+}
+<div class="container">
+    <div class="well">
+        <h2>Create Schedule</h2>
+        @using (Html.BeginForm("Create", "Schedule", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <p style="text-align:center;" class="text-danger">@ViewBag.ErrorMessage</p>
+            <p style="text-align:center;" class="text-danger">@ViewBag.ErrorMessageStartDate</p>
+            <div class="form-group">
+                @Html.LabelFor(m => m.StartDate, new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control" })
+                </div>
+            </div>
+            <p style="text-align:center;" class="text-danger">@ViewBag.ErrorMessageEndDate</p>
+            <div class="form-group">
+                @Html.LabelFor(m => m.EndDate, new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control", @rows = "7" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-4">
+                    @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-default" })
+                    <input type="submit" value="Create" class="btn btn-success" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+
+

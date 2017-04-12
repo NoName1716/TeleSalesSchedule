@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace TelesalesSchedule.Models
 {
@@ -20,6 +17,8 @@ namespace TelesalesSchedule.Models
         public string IpAddress { get; set; }
 
         public string Location { get; set; }
+
+        public bool IsWorking { get; set; }
 
         public virtual ICollection<Schedule> Schedules { get; set; }
     }

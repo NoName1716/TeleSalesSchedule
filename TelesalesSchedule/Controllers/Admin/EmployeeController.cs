@@ -12,50 +12,55 @@ namespace TelesalesSchedule.Controllers.Admin
 {
     public class EmployeeController : Controller
     {
-        // GET: Employee
+        // GET: Employee/Create
         //public ActionResult Index()
         //{
         //    return View();
         //}
         [HttpGet]
-        public ActionResult Register()
+        public ActionResult Create()
         {
             return View();
         }
 
+        // POST: Employee/Create
         [HttpPost]
-        [ActionName("Register")]
-        public ActionResult Register(Employee employee)
+        [ActionName("Create")]
+        public ActionResult Create(Employee employee)
         {
-
-            using (var db = new TelesalesScheduleDbContext())
+            if (ModelState.IsValid)
             {
-                var emoloyees = db.Employees.Select(e => e.FullName).ToList();
-                if (emoloyees.Contains(employee.FullName))
+                using (var db = new TelesalesScheduleDbContext())
                 {
-                    ViewBag.ErrorMessage = "Employee already exist!";
-                    return View();
-                }
-                else
-                {
-                    var emp = new Employee
+                    var emoloyees = db.Employees.Select(e => e.FullName).ToList();
+                    if (emoloyees.Contains(employee.FullName))
                     {
-                        FullName = employee.FullName,
-                        BirthDay = Convert.ToDateTime(employee.BirthDay),
-                        FullTimeAgent = employee.FullTimeAgent,
-                        IsDeleted = employee.IsDeleted,
-                        Manager = db.Employees.Where(m => m.FullName == employee.Manager.FullName).FirstOrDefault(),
-                        SaveDeskAgent = employee.SaveDeskAgent,
-                        UserName = employee.UserName,
-                        SeniorSpecialist = employee.SeniorSpecialist
-                    };
-                    db.Employees.Add(emp);
-                    db.SaveChanges();
+                        ViewBag.ErrorMessage = "Employee already exist!";
+                        return View();
+                    }
+                    else
+                    {
+                        var emp = new Employee
+                        {
+                            FullName = employee.FullName,
+                            BirthDay = Convert.ToDateTime(employee.BirthDay),
+                            FullTimeAgent = employee.FullTimeAgent,
+                            IsDeleted = employee.IsDeleted,
+                            Manager = db.Employees.Where(m => m.FullName == employee.Manager.FullName).FirstOrDefault(),
+                            SaveDeskAgent = employee.SaveDeskAgent,
+                            UserName = employee.UserName,
+                            SeniorSpecialist = employee.SeniorSpecialist
+                        };
+
+                        db.Employees.Add(emp);
+                        db.SaveChanges();
+                    }
+
+                    return RedirectToAction("List");
                 }
-
             }
-
-            return RedirectToAction("Index", "Home");
+            
+            return View(employee);
         }
 
         //

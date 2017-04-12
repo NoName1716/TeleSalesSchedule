@@ -158,6 +158,9 @@ namespace TelesalesSchedule.Controllers.Admin
                     .First();
 
                 // TODO: when deleting user to change IsDeleted = true in Employee
+                var employee = context.Employees.SingleOrDefault(e => e.UserName == user.UserName);
+                employee.IsDeleted = true;
+                context.Entry(employee).State = EntityState.Modified;
 
                 // Delete user and save changes
                 context.Users.Remove(user);

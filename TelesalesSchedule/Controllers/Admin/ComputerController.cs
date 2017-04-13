@@ -96,48 +96,5 @@ namespace TelesalesSchedule.Controllers.Admin
 
             return View(computer);
         }
-
-        //
-        // GET: Computer/Delete
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            using (var context = new TelesalesScheduleDbContext())
-            {
-                var computer = context.Computers
-                    .FirstOrDefault(c => c.Id == id);
-
-                if (computer == null)
-                {
-                    return HttpNotFound();
-                }
-
-                return View(computer);
-            }
-        }
-
-        // 
-        // POST: Computer/Delete
-        [HttpPost]
-        [ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int? id)
-        {
-            using (var context = new TelesalesScheduleDbContext())
-            {
-                var computer = context.Computers
-                    .FirstOrDefault(c => c.Id == id);
-
-                // TODO: To remove all schedules for this computer first
-
-                context.Computers.Remove(computer);
-                context.SaveChanges();
-
-                return RedirectToAction("List");
-            }
-        }
     }
 }

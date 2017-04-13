@@ -119,58 +119,7 @@ namespace TelesalesSchedule.Controllers
                 }
 
                 var model = new ScheduleViewModel();
-                model.Id = schedule.Id;
-                model.StartDate = schedule.StartDate;
-                model.EndDate = schedule.EndDate;
-
-                model.MondayShiftOneStart = schedule.MondayShiftOneStart;
-                model.MondayShiftOneEnd = schedule.MondayShiftOneEnd;
-                model.MondayShiftTwoStart = schedule.MondayShiftTwoStart;
-                model.MondayShiftTwoEnd = schedule.MondayShiftTwoEnd;
-                model.MondayShiftThreeStart = schedule.MondayShiftThreeStart;
-                model.MondayShiftThreeEnd = schedule.MondayShiftThreeEnd;
-
-                model.ThuesdayShiftOneStart = schedule.ThuesdayShiftOneStart;
-                model.ThuesdayShiftOneEnd = schedule.ThuesdayShiftOneEnd;
-                model.ThuesdayShiftTwoStart = schedule.ThuesdayShiftTwoStart;
-                model.ThuesdayShiftTwoEnd = schedule.ThuesdayShiftTwoEnd;
-                model.ThuesdayShiftThreeStart = schedule.ThuesdayShiftThreeStart;
-                model.ThuesdayShiftThreeEnd = schedule.ThuesdayShiftThreeEnd;
-
-                model.WednesdayShiftOneStart = schedule.WednesdayShiftOneStart;
-                model.WednesdayShiftOneEnd = schedule.WednesdayShiftOneEnd;
-                model.WednesdayShiftTwoStart = schedule.WednesdayShiftTwoStart;
-                model.WednesdayShiftTwoEnd = schedule.WednesdayShiftTwoEnd;
-                model.WednesdayShiftThreeStart = schedule.WednesdayShiftThreeStart;
-                model.WednesdayShiftThreeEnd = schedule.WednesdayShiftThreeEnd;
-
-                model.ThursdayShiftOneStart = schedule.ThursdayShiftOneStart;
-                model.ThursdayShiftOneEnd = schedule.ThursdayShiftOneEnd;
-                model.ThursdayShiftTwoStart = schedule.ThursdayShiftTwoStart;
-                model.ThursdayShiftTwoEnd = schedule.ThursdayShiftTwoEnd;
-                model.ThursdayShiftThreeStart = schedule.ThursdayShiftThreeStart;
-                model.ThursdayShiftThreeEnd = schedule.ThursdayShiftThreeEnd;
-
-                model.FridayShiftOneStart = schedule.FridayShiftOneStart;
-                model.FridayShiftOneEnd = schedule.FridayShiftOneEnd;
-                model.FridayShiftTwoStart = schedule.FridayShiftTwoStart;
-                model.FridayShiftTwoEnd = schedule.FridayShiftTwoEnd;
-                model.FridayShiftThreeStart = schedule.FridayShiftThreeStart;
-                model.FridayShiftThreeEnd = schedule.FridayShiftThreeEnd;
-
-                model.SaturdayShiftOneStart = schedule.SaturdayShiftOneStart;
-                model.SaturdayShiftOneEnd = schedule.SaturdayShiftOneEnd;
-                model.SaturdayShiftTwoStart = schedule.SaturdayShiftTwoStart;
-                model.SaturdayShiftTwoEnd = schedule.SaturdayShiftTwoEnd;
-                model.SaturdayShiftThreeStart = schedule.SaturdayShiftThreeStart;
-                model.SaturdayShiftThreeEnd = schedule.SaturdayShiftThreeEnd;
-
-                model.SundayShiftOneStart = schedule.SundayShiftOneStart;
-                model.SundayShiftOneEnd = schedule.SundayShiftOneEnd;
-                model.SundayShiftTwoStart = schedule.SundayShiftTwoStart;
-                model.SundayShiftTwoEnd = schedule.SundayShiftTwoEnd;
-                model.SundayShiftThreeStart = schedule.SundayShiftThreeStart;
-                model.SundayShiftThreeEnd = schedule.SundayShiftThreeEnd;
+                this.GetValues(schedule, model);
 
                 return View(model);
             }
@@ -192,239 +141,7 @@ namespace TelesalesSchedule.Controllers
                         s.EndDate == model.EndDate);
 
                     string shiftValue = Request.Form["shift"];
-
-                    if (shiftValue == "First")
-                    {
-                        if (model.MondayShiftOneStart != null)
-                        {
-                            schedule.MondayShiftOneStart = model.MondayShiftOneStart;
-                        }
-                        if (model.MondayShiftOneEnd != null)
-                        {
-                            schedule.MondayShiftOneEnd = model.MondayShiftOneEnd;
-                        }
-
-                        if (model.ThuesdayShiftOneStart != null)
-                        {
-                            schedule.ThuesdayShiftOneStart = model.ThuesdayShiftOneStart;
-                        }
-                        if (model.ThuesdayShiftOneEnd != null)
-                        {
-                            schedule.ThuesdayShiftOneEnd = model.ThuesdayShiftOneEnd;
-                        }
-
-                        if (model.WednesdayShiftOneStart != null)
-                        {
-                            schedule.WednesdayShiftOneStart = model.WednesdayShiftOneStart;
-                        }
-                        if (model.WednesdayShiftOneEnd != null)
-                        {
-                            schedule.WednesdayShiftOneEnd = model.WednesdayShiftOneEnd;
-                        }
-
-                        if (model.ThursdayShiftOneStart != null)
-                        {
-                            schedule.ThursdayShiftOneStart = model.ThursdayShiftOneStart;
-                        }
-                        if (model.ThursdayShiftOneEnd != null)
-                        {
-                            schedule.ThursdayShiftOneEnd = model.ThursdayShiftOneEnd;
-                        }
-
-                        if (model.FridayShiftOneStart != null)
-                        {
-                            schedule.FridayShiftOneStart = model.FridayShiftOneStart;
-                        }
-                        if (model.FridayShiftOneEnd != null)
-                        {
-                            schedule.FridayShiftOneEnd = model.FridayShiftOneEnd;
-                        }
-
-                        if (model.SaturdayShiftOneStart != null)
-                        {
-                            schedule.SaturdayShiftOneStart = model.SaturdayShiftOneStart;
-                        }
-                        if (model.SaturdayShiftOneEnd != null)
-                        {
-                            schedule.SaturdayShiftOneEnd = model.SaturdayShiftOneEnd;
-                        }
-
-                        if (model.SundayShiftOneStart != null)
-                        {
-                            schedule.SundayShiftOneStart = model.SundayShiftOneStart;
-                        }
-                        if (model.SundayShiftOneEnd != null)
-                        {
-                            schedule.SundayShiftOneEnd = model.SundayShiftOneEnd;
-                        }
-                    }
-                    else if (shiftValue == "Second")
-                    {
-                        if (model.MondayShiftTwoStart != null)
-                        {
-                            schedule.MondayShiftTwoStart = model.MondayShiftTwoStart;
-                        }
-                        if (model.MondayShiftTwoEnd != null)
-                        {
-                            schedule.MondayShiftTwoEnd = model.MondayShiftTwoEnd;
-                        }
-
-                        if (model.ThuesdayShiftTwoStart != null)
-                        {
-                            schedule.ThuesdayShiftTwoStart = model.ThuesdayShiftTwoStart;
-                        }
-                        if (model.ThuesdayShiftTwoEnd != null)
-                        {
-                            schedule.ThuesdayShiftTwoEnd = model.ThuesdayShiftTwoEnd;
-                        }
-
-                        if (model.WednesdayShiftTwoStart != null)
-                        {
-                            schedule.WednesdayShiftTwoStart = model.WednesdayShiftTwoStart;  
-                        }
-                        if (model.WednesdayShiftTwoEnd != null)
-                        {
-                            schedule.WednesdayShiftTwoEnd = model.WednesdayShiftTwoEnd;
-                        }
-
-                        if (model.ThursdayShiftTwoStart != null)
-                        {
-                            schedule.ThursdayShiftTwoStart = model.ThursdayShiftTwoStart;
-                        }
-                        if (model.ThursdayShiftTwoEnd != null)
-                        {
-                            schedule.ThursdayShiftTwoEnd = model.ThursdayShiftTwoEnd;
-                        }
-
-                        if (model.FridayShiftTwoStart != null)
-                        {
-                            schedule.FridayShiftTwoStart = model.FridayShiftTwoStart; 
-                        }
-                        if (model.FridayShiftTwoEnd != null)
-                        {
-                            schedule.FridayShiftTwoEnd = model.FridayShiftTwoEnd;
-                        }
-
-                        if (model.SaturdayShiftTwoStart != null)
-                        {
-                            schedule.SaturdayShiftTwoStart = model.SaturdayShiftTwoStart;
-                        }
-                        if (model.SaturdayShiftTwoEnd != null)
-                        {
-                            schedule.SaturdayShiftTwoEnd = model.SaturdayShiftTwoEnd;
-                        }
-
-                        if (model.SundayShiftTwoStart != null)
-                        {
-                            schedule.SundayShiftTwoStart = model.SundayShiftTwoStart;
-                        }
-                        if (model.SundayShiftTwoEnd != null)
-                        {
-                            schedule.SundayShiftTwoEnd = model.SundayShiftTwoEnd;
-                        }
-                    }
-                    else if (shiftValue == "Third")
-                    {
-                        if (model.MondayShiftTwoStart != null)
-                        {
-                            schedule.MondayShiftTwoStart = model.MondayShiftTwoStart;
-                        }
-                        if (model.MondayShiftTwoEnd != null)
-                        {
-                            schedule.MondayShiftTwoEnd = model.MondayShiftTwoEnd;
-                        }
-
-                        if (model.ThuesdayShiftTwoStart != null)
-                        {
-                            schedule.ThuesdayShiftTwoStart = model.ThuesdayShiftTwoStart;
-                        }
-                        if (model.ThuesdayShiftTwoEnd != null)
-                        {
-                            schedule.ThuesdayShiftTwoEnd = model.ThuesdayShiftTwoEnd;
-                        }
-
-                        if (model.WednesdayShiftTwoStart != null)
-                        {
-                            schedule.WednesdayShiftTwoStart = model.WednesdayShiftTwoStart;
-                        }
-                        if (model.WednesdayShiftTwoEnd != null)
-                        {
-                            schedule.WednesdayShiftTwoEnd = model.WednesdayShiftTwoEnd;
-                        }
-
-                        if (model.ThursdayShiftTwoStart != null)
-                        {
-                            schedule.ThursdayShiftTwoStart = model.ThursdayShiftTwoStart;
-                        }
-                        if (model.ThursdayShiftTwoEnd != null)
-                        {
-                            schedule.ThursdayShiftTwoEnd = model.ThursdayShiftTwoEnd;
-                        }
-
-                        if (model.FridayShiftTwoStart != null)
-                        {
-                            schedule.FridayShiftTwoStart = model.FridayShiftTwoStart;
-                        }
-                        if (model.FridayShiftTwoEnd != null)
-                        {
-                            schedule.FridayShiftTwoEnd = model.FridayShiftTwoEnd;
-                        }
-
-                        if (model.SaturdayShiftTwoStart != null)
-                        {
-                            schedule.SaturdayShiftTwoStart = model.SaturdayShiftTwoStart;
-                        }
-                        if (model.SaturdayShiftTwoEnd != null)
-                        {
-                            schedule.SaturdayShiftTwoEnd = model.SaturdayShiftTwoEnd;
-                        }
-
-                        if (model.SundayShiftTwoStart != null)
-                        {
-                            schedule.SundayShiftTwoStart = model.SundayShiftTwoStart;
-                        }
-                        if (model.SundayShiftTwoEnd != null)
-                        {
-                            schedule.SundayShiftTwoEnd = model.SundayShiftTwoEnd;
-                        }
-                    }
-
-
-
-                    schedule.MondayShiftThreeStart = model.MondayShiftThreeStart;
-                    schedule.MondayShiftThreeEnd = model.MondayShiftThreeEnd;
-
-
-
-                  
-                    schedule.ThuesdayShiftThreeStart = model.ThuesdayShiftThreeStart;
-                    schedule.ThuesdayShiftThreeEnd = model.ThuesdayShiftThreeEnd;
-
-
-
-                    
-                    schedule.WednesdayShiftThreeStart = model.WednesdayShiftThreeStart;
-                    schedule.WednesdayShiftThreeEnd = model.WednesdayShiftThreeEnd;
-
-
-                   
-                    schedule.ThursdayShiftThreeStart = model.ThursdayShiftThreeStart;
-                    schedule.ThursdayShiftThreeEnd = model.ThursdayShiftThreeEnd;
-
-
-                 
-                    schedule.FridayShiftThreeStart = model.FridayShiftThreeStart;
-                    schedule.FridayShiftThreeEnd = model.FridayShiftThreeEnd;
-
-
-                  
-                    schedule.SaturdayShiftThreeStart = model.SaturdayShiftThreeStart;
-                    schedule.SaturdayShiftThreeEnd = model.SaturdayShiftThreeEnd;
-
-
-                    
-                    schedule.SundayShiftThreeStart = model.SundayShiftThreeStart;
-                    schedule.SundayShiftThreeEnd = model.SundayShiftThreeEnd;
+                    this.SetValues(shiftValue, schedule, model);
 
                     context.Entry(schedule).State = EntityState.Modified;
                     context.SaveChanges();
@@ -434,6 +151,261 @@ namespace TelesalesSchedule.Controllers
             }
 
             return View(model);
+        }
+
+        private void GetValues(Schedule schedule, ScheduleViewModel model)
+        {
+            model.Id = schedule.Id;
+            model.StartDate = schedule.StartDate;
+            model.EndDate = schedule.EndDate;
+
+            model.MondayShiftOneStart = schedule.MondayShiftOneStart;
+            model.MondayShiftOneEnd = schedule.MondayShiftOneEnd;
+            model.MondayShiftTwoStart = schedule.MondayShiftTwoStart;
+            model.MondayShiftTwoEnd = schedule.MondayShiftTwoEnd;
+            model.MondayShiftThreeStart = schedule.MondayShiftThreeStart;
+            model.MondayShiftThreeEnd = schedule.MondayShiftThreeEnd;
+
+            model.ThuesdayShiftOneStart = schedule.ThuesdayShiftOneStart;
+            model.ThuesdayShiftOneEnd = schedule.ThuesdayShiftOneEnd;
+            model.ThuesdayShiftTwoStart = schedule.ThuesdayShiftTwoStart;
+            model.ThuesdayShiftTwoEnd = schedule.ThuesdayShiftTwoEnd;
+            model.ThuesdayShiftThreeStart = schedule.ThuesdayShiftThreeStart;
+            model.ThuesdayShiftThreeEnd = schedule.ThuesdayShiftThreeEnd;
+
+            model.WednesdayShiftOneStart = schedule.WednesdayShiftOneStart;
+            model.WednesdayShiftOneEnd = schedule.WednesdayShiftOneEnd;
+            model.WednesdayShiftTwoStart = schedule.WednesdayShiftTwoStart;
+            model.WednesdayShiftTwoEnd = schedule.WednesdayShiftTwoEnd;
+            model.WednesdayShiftThreeStart = schedule.WednesdayShiftThreeStart;
+            model.WednesdayShiftThreeEnd = schedule.WednesdayShiftThreeEnd;
+
+            model.ThursdayShiftOneStart = schedule.ThursdayShiftOneStart;
+            model.ThursdayShiftOneEnd = schedule.ThursdayShiftOneEnd;
+            model.ThursdayShiftTwoStart = schedule.ThursdayShiftTwoStart;
+            model.ThursdayShiftTwoEnd = schedule.ThursdayShiftTwoEnd;
+            model.ThursdayShiftThreeStart = schedule.ThursdayShiftThreeStart;
+            model.ThursdayShiftThreeEnd = schedule.ThursdayShiftThreeEnd;
+
+            model.FridayShiftOneStart = schedule.FridayShiftOneStart;
+            model.FridayShiftOneEnd = schedule.FridayShiftOneEnd;
+            model.FridayShiftTwoStart = schedule.FridayShiftTwoStart;
+            model.FridayShiftTwoEnd = schedule.FridayShiftTwoEnd;
+            model.FridayShiftThreeStart = schedule.FridayShiftThreeStart;
+            model.FridayShiftThreeEnd = schedule.FridayShiftThreeEnd;
+
+            model.SaturdayShiftOneStart = schedule.SaturdayShiftOneStart;
+            model.SaturdayShiftOneEnd = schedule.SaturdayShiftOneEnd;
+            model.SaturdayShiftTwoStart = schedule.SaturdayShiftTwoStart;
+            model.SaturdayShiftTwoEnd = schedule.SaturdayShiftTwoEnd;
+            model.SaturdayShiftThreeStart = schedule.SaturdayShiftThreeStart;
+            model.SaturdayShiftThreeEnd = schedule.SaturdayShiftThreeEnd;
+
+            model.SundayShiftOneStart = schedule.SundayShiftOneStart;
+            model.SundayShiftOneEnd = schedule.SundayShiftOneEnd;
+            model.SundayShiftTwoStart = schedule.SundayShiftTwoStart;
+            model.SundayShiftTwoEnd = schedule.SundayShiftTwoEnd;
+            model.SundayShiftThreeStart = schedule.SundayShiftThreeStart;
+            model.SundayShiftThreeEnd = schedule.SundayShiftThreeEnd;
+        }
+
+        private void SetValues(string shiftValue, Schedule schedule, ScheduleViewModel model)
+        {
+            if (shiftValue == "First")
+            {
+                if (model.MondayShiftOneStart != null)
+                {
+                    schedule.MondayShiftOneStart = model.MondayShiftOneStart;
+                }
+                if (model.MondayShiftOneEnd != null)
+                {
+                    schedule.MondayShiftOneEnd = model.MondayShiftOneEnd;
+                }
+
+                if (model.ThuesdayShiftOneStart != null)
+                {
+                    schedule.ThuesdayShiftOneStart = model.ThuesdayShiftOneStart;
+                }
+                if (model.ThuesdayShiftOneEnd != null)
+                {
+                    schedule.ThuesdayShiftOneEnd = model.ThuesdayShiftOneEnd;
+                }
+
+                if (model.WednesdayShiftOneStart != null)
+                {
+                    schedule.WednesdayShiftOneStart = model.WednesdayShiftOneStart;
+                }
+                if (model.WednesdayShiftOneEnd != null)
+                {
+                    schedule.WednesdayShiftOneEnd = model.WednesdayShiftOneEnd;
+                }
+
+                if (model.ThursdayShiftOneStart != null)
+                {
+                    schedule.ThursdayShiftOneStart = model.ThursdayShiftOneStart;
+                }
+                if (model.ThursdayShiftOneEnd != null)
+                {
+                    schedule.ThursdayShiftOneEnd = model.ThursdayShiftOneEnd;
+                }
+
+                if (model.FridayShiftOneStart != null)
+                {
+                    schedule.FridayShiftOneStart = model.FridayShiftOneStart;
+                }
+                if (model.FridayShiftOneEnd != null)
+                {
+                    schedule.FridayShiftOneEnd = model.FridayShiftOneEnd;
+                }
+
+                if (model.SaturdayShiftOneStart != null)
+                {
+                    schedule.SaturdayShiftOneStart = model.SaturdayShiftOneStart;
+                }
+                if (model.SaturdayShiftOneEnd != null)
+                {
+                    schedule.SaturdayShiftOneEnd = model.SaturdayShiftOneEnd;
+                }
+
+                if (model.SundayShiftOneStart != null)
+                {
+                    schedule.SundayShiftOneStart = model.SundayShiftOneStart;
+                }
+                if (model.SundayShiftOneEnd != null)
+                {
+                    schedule.SundayShiftOneEnd = model.SundayShiftOneEnd;
+                }
+            }
+            else if (shiftValue == "Second")
+            {
+                if (model.MondayShiftTwoStart != null)
+                {
+                    schedule.MondayShiftTwoStart = model.MondayShiftTwoStart;
+                }
+                if (model.MondayShiftTwoEnd != null)
+                {
+                    schedule.MondayShiftTwoEnd = model.MondayShiftTwoEnd;
+                }
+
+                if (model.ThuesdayShiftTwoStart != null)
+                {
+                    schedule.ThuesdayShiftTwoStart = model.ThuesdayShiftTwoStart;
+                }
+                if (model.ThuesdayShiftTwoEnd != null)
+                {
+                    schedule.ThuesdayShiftTwoEnd = model.ThuesdayShiftTwoEnd;
+                }
+
+                if (model.WednesdayShiftTwoStart != null)
+                {
+                    schedule.WednesdayShiftTwoStart = model.WednesdayShiftTwoStart;
+                }
+                if (model.WednesdayShiftTwoEnd != null)
+                {
+                    schedule.WednesdayShiftTwoEnd = model.WednesdayShiftTwoEnd;
+                }
+
+                if (model.ThursdayShiftTwoStart != null)
+                {
+                    schedule.ThursdayShiftTwoStart = model.ThursdayShiftTwoStart;
+                }
+                if (model.ThursdayShiftTwoEnd != null)
+                {
+                    schedule.ThursdayShiftTwoEnd = model.ThursdayShiftTwoEnd;
+                }
+
+                if (model.FridayShiftTwoStart != null)
+                {
+                    schedule.FridayShiftTwoStart = model.FridayShiftTwoStart;
+                }
+                if (model.FridayShiftTwoEnd != null)
+                {
+                    schedule.FridayShiftTwoEnd = model.FridayShiftTwoEnd;
+                }
+
+                if (model.SaturdayShiftTwoStart != null)
+                {
+                    schedule.SaturdayShiftTwoStart = model.SaturdayShiftTwoStart;
+                }
+                if (model.SaturdayShiftTwoEnd != null)
+                {
+                    schedule.SaturdayShiftTwoEnd = model.SaturdayShiftTwoEnd;
+                }
+
+                if (model.SundayShiftTwoStart != null)
+                {
+                    schedule.SundayShiftTwoStart = model.SundayShiftTwoStart;
+                }
+                if (model.SundayShiftTwoEnd != null)
+                {
+                    schedule.SundayShiftTwoEnd = model.SundayShiftTwoEnd;
+                }
+            }
+            else if (shiftValue == "Third")
+            {
+                if (model.MondayShiftThreeStart != null)
+                {
+                    schedule.MondayShiftThreeStart = model.MondayShiftThreeStart;
+                }
+                if (model.MondayShiftThreeEnd != null)
+                {
+                    schedule.MondayShiftThreeEnd = model.MondayShiftThreeEnd;
+                }
+
+                if (model.ThuesdayShiftThreeStart != null)
+                {
+                    schedule.ThuesdayShiftThreeStart = model.ThuesdayShiftThreeStart;
+                }
+                if (model.ThuesdayShiftThreeEnd != null)
+                {
+                    schedule.ThuesdayShiftThreeEnd = model.ThuesdayShiftThreeEnd;
+                }
+
+                if (model.WednesdayShiftThreeStart != null)
+                {
+                    schedule.WednesdayShiftThreeStart = model.WednesdayShiftThreeStart;
+                }
+                if (model.WednesdayShiftThreeEnd != null)
+                {
+                    schedule.WednesdayShiftThreeEnd = model.WednesdayShiftThreeEnd;
+                }
+
+                if (model.ThursdayShiftThreeStart != null)
+                {
+                    schedule.ThursdayShiftThreeStart = model.ThursdayShiftThreeStart;
+                }
+                if (model.ThursdayShiftThreeEnd != null)
+                {
+                    schedule.ThursdayShiftThreeEnd = model.ThursdayShiftThreeEnd;
+                }
+
+                if (model.FridayShiftThreeStart != null)
+                {
+                    schedule.FridayShiftThreeStart = model.FridayShiftThreeStart;
+                }
+                if (model.FridayShiftThreeEnd != null)
+                {
+                    schedule.FridayShiftThreeEnd = model.FridayShiftThreeEnd;
+                }
+
+                if (model.SaturdayShiftThreeStart != null)
+                {
+                    schedule.SaturdayShiftThreeStart = model.SaturdayShiftThreeStart;
+                }
+                if (model.SaturdayShiftThreeEnd != null)
+                {
+                    schedule.SaturdayShiftThreeEnd = model.SaturdayShiftThreeEnd;
+                }
+
+                if (model.SundayShiftThreeStart != null)
+                {
+                    schedule.SundayShiftThreeStart = model.SundayShiftThreeStart;
+                }
+                if (model.SundayShiftThreeEnd != null)
+                {
+                    schedule.SundayShiftThreeEnd = model.SundayShiftThreeEnd;
+                }
+            }
         }
     }
 }

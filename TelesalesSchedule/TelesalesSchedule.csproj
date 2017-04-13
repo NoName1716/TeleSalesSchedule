@@ -214,6 +214,7 @@
     <Compile Include="Models\Computer.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Schedule.cs" />
+    <Compile Include="Models\ScheduleViewModel.cs" />
     <Compile Include="Models\TelesalesScheduleDbContext.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -286,6 +287,7 @@
     <Content Include="Views\Computer\Edit.cshtml" />
     <Content Include="Views\Schedule\Create.cshtml" />
     <Content Include="Views\Schedule\List.cshtml" />
+    <Content Include="Views\Schedule\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

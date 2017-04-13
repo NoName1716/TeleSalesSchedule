@@ -157,7 +157,7 @@ namespace TelesalesSchedule.Controllers.Admin
                     .Where(u => u.Id.Equals(id))
                     .First();
 
-                // TODO: when deleting user to change IsDeleted = true in Employee
+                // when deleting user to change IsDeleted = true in Employee
                 var employee = context.Employees.SingleOrDefault(e => e.UserName == user.UserName);
                 employee.IsDeleted = true;
                 context.Entry(employee).State = EntityState.Modified;

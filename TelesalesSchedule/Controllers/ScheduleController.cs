@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using TelesalesSchedule.Models;
+using TelesalesSchedule.Models.ViewModels;
 
 namespace TelesalesSchedule.Controllers
 {
@@ -22,77 +23,173 @@ namespace TelesalesSchedule.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Schedule model, int? id)
+        public ActionResult Create(ScheduleView model)
         {
             using (var db = new TelesalesScheduleDbContext())
             {
-                if(!ModelState.IsValid)
+                var employee = db.Employees.Where(e => e.UserName == this.User.Identity.Name).FirstOrDefault();
+                if (employee == null)
                 {
-                    ViewBag.ErrorMessage = "Please enter a date!";
-                    return View();
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 else
                 {
-                    try
+                    DateTime nextMonday = DateTime.Now.AddDays(1);
+                    while (nextMonday.DayOfWeek != DayOfWeek.Monday)
                     {
-                        if (User.IsInRole("Admin"))
-                        {
-                            DateTime startDate = Convert.ToDateTime(model.StartDate);
-                            DateTime endDate = Convert.ToDateTime(model.EndDate);
-                            var starDates = db.Schedules.Select(s => s.StartDate).ToList();
-                            var endDates = db.Schedules.Select(s => s.EndDate).ToList();
-                            //check for existing date
-                            if (starDates.Contains(startDate))
-                            {
-                                ViewBag.ErrorMessageStartDate = "Schedule StartDate already exist.";
-                                return View();
-                            }
-                            else if (endDates.Contains(endDate))
-                            {
-                                ViewBag.ErrorMessageEndDate = "Schedule EndDate already exist.";
-                                return View();
-                            }
-                            else if ((int)startDate.DayOfWeek != 1)
-                            {
-                                ViewBag.ErrorMessageStartDate = "StartDate must be Monday!";
-                                return View();
-                            }
-                            else if ((int)endDate.DayOfWeek != 0)
-                            {
-                                ViewBag.ErrorMessageStartDate = "EndDate must be Sunday!";
-                                return View();
-                            }
-                            else if (startDate >= endDate)
-                            {
-                                ViewBag.ErrorMessage = "Invalid data.";
-                                return View();
-                            }
-                            else
-                            {
-                                var schedule = new Schedule
-                                {
-                                    StartDate = startDate,
-                                    EndDate = endDate
-                                };
-                                db.Schedules.Add(schedule);
-                                db.SaveChanges();
-                            }
-                        }
+                        nextMonday = nextMonday.AddDays(1);
                     }
-                    catch (Exception)
-                    {
+                    var nextSunday = nextMonday.AddDays(6);
 
-                        ViewBag.ErrorMessage = "Invalid data.";
+                    //chek if Schedule is exist
+                    if (employee.Schedules.Select(s => s.StartDate).Contains(nextMonday) || employee.Schedules.Select(s => s.StartDate).Contains(nextSunday))
+                    {
+                        ViewBag.ErrorMessage = "Schedule already exist. If you want you can edit it!";
                         return View();
                     }
+                    else
+                    {
+                        FindPlace(db, nextMonday, nextSunday, model);
+                    }
                 }
+
             }
             return RedirectToAction("List");
         }
 
+        private void FindPlace(TelesalesScheduleDbContext db, DateTime monday, DateTime sunday, ScheduleView model)
+        {
+            var computers = db.Computers.ToList();
+
+            for (int i = 1; i <= computers.Count; i++)
+            {
+                var c = db.Computers.Find(i);
+                var schedule = c.Schedules.Where(s => s.StartDate == monday && s.EndDate == sunday);
+                if (schedule.Count() == 0)
+                {
+                    var scheduleToAdd = new Schedule
+                    {
+                        StartDate = monday,
+                        EndDate = sunday
+                    };
+                    c.Schedules.Add(scheduleToAdd);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    //
+
+                }
+            }
+            //monday check
+            if (model.MondayStart != null || model.MondayEnd != null)
+            {
+                double mondayStart = double.Parse(model.MondayStart);
+                double mondayEnd = double.Parse(model.MondayEnd);
+                for (int i = 1; i <= computers.Count; i++)
+                {
+                    var comp = db.Computers.Find(i);
+                    var schedule = comp.Schedules.Where(s => s.StartDate == monday && s.EndDate == sunday).FirstOrDefault();
+                    if (mondayStart < 13 && mondayEnd <=13)
+                    {
+                        if(schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null)
+                        {
+                            schedule.MondayShiftOneStart = mondayStart;
+                            schedule.MondayShiftOneEnd = mondayEnd;
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                       
+                    }
+                    if (mondayStart < 13 && mondayEnd <= 17)
+                    {
+                        if (schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null && schedule.MondayShiftTwoStart == null && schedule.MondayShiftTwoEnd == null)
+                        {
+                            schedule.MondayShiftOneStart = mondayStart;
+                            schedule.MondayShiftOneEnd = 13;
+                            schedule.MondayShiftTwoStart = 13;
+                            schedule.MondayShiftTwoEnd = mondayEnd;
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            break;
+                        }
+
+                    }
+                    if (mondayStart < 13 && mondayEnd <= 21 && mondayEnd - mondayStart > 8)
+                    {
+                        if (schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null && schedule.MondayShiftTwoStart == null && schedule.MondayShiftTwoEnd == null && schedule.MondayShiftThreeStart == null && schedule.MondayShiftThreeEnd == null)
+                        {
+                            schedule.MondayShiftOneStart = mondayStart;
+                            schedule.MondayShiftOneEnd = 13;
+                            schedule.MondayShiftTwoStart = 13;
+                            schedule.MondayShiftTwoEnd = 17;
+                            schedule.MondayShiftThreeStart = 17;
+                            schedule.MondayShiftThreeEnd = mondayEnd;
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            if(schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null && schedule.MondayShiftTwoStart == null && schedule.MondayShiftTwoEnd == null && schedule.MondayShiftThreeStart >= mondayEnd)
+                            {
+                                schedule.MondayShiftOneStart = mondayStart;
+                                schedule.MondayShiftOneEnd = 13;
+                                schedule.MondayShiftTwoStart = 13;
+                                schedule.MondayShiftTwoEnd = 17;
+                                schedule.MondayShiftThreeStart = 17;
+                                db.SaveChanges();
+                            }
+                        }
+
+                    }
+                    if (mondayStart >= 13 && mondayEnd <= 17)
+                    {
+                        if (schedule.MondayShiftTwoStart == null && schedule.MondayShiftTwoEnd == null)
+                        {
+                            schedule.MondayShiftTwoStart = mondayStart;
+                            schedule.MondayShiftTwoEnd = mondayEnd;
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            if(schedule.MondayShiftTwoEnd <= mondayStart)
+                            {
+                                schedule.MondayShiftTwoEnd = mondayStart;
+                                db.SaveChanges();
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        if (schedule.MondayShiftThreeStart == null && schedule.MondayShiftThreeEnd == null)
+                        {
+                            schedule.MondayShiftThreeStart = mondayStart;
+                            schedule.MondayShiftThreeEnd = mondayEnd;
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            if(schedule.MondayShiftThreeEnd <= mondayStart)
+                            {
+                                schedule.MondayShiftThreeEnd = mondayEnd;
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+
         public ActionResult List()
         {
-            using (var db= new TelesalesScheduleDbContext())
+            using (var db = new TelesalesScheduleDbContext())
             {
                 var schedules = db.Schedules.ToList();
                 return View(schedules);

@@ -139,6 +139,7 @@
             @Html.ValidationSummary("", new { @class = "text-danger" })
             <p style="text-align:center;" class="text-danger">@ViewBag.ErrorMessage</p>
             <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.ErrorMessage</p>
                 @Html.Label("Monday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
                     @Html.DropDownListFor(m => m.MondayStart, hoursList, "--Select Hour--")

@@ -41,15 +41,23 @@ namespace TelesalesSchedule.Controllers
                     }
                     var nextSunday = nextMonday.AddDays(6);
 
-                    //chek if Schedule is exist
-                    if (employee.Schedules.Select(s => s.StartDate).Contains(nextMonday) || employee.Schedules.Select(s => s.StartDate).Contains(nextSunday))
+                    //chek if Employee Schedule is exist
+                    if (employee.Schedules.Select(s => s.StartDate.Date).Contains(nextMonday.Date) || employee.Schedules.Select(s => s.StartDate.Date).Contains(nextSunday.Date))
                     {
                         ViewBag.ErrorMessage = "Schedule already exist. If you want you can edit it!";
                         return View();
                     }
                     else
                     {
-                        FindPlace(db, nextMonday, nextSunday, model);
+                        int errCount = 0;
+                        
+                        FindPlace(db, nextMonday, nextSunday, model, errCount);
+                        //It's not set value to errCount I dont know why ;(
+                        if (errCount == 1)
+                        {
+
+                        }
+                       
                     }
                 }
 
@@ -57,134 +65,158 @@ namespace TelesalesSchedule.Controllers
             return RedirectToAction("List");
         }
 
-        private void FindPlace(TelesalesScheduleDbContext db, DateTime monday, DateTime sunday, ScheduleView model)
+        private static void FindPlace(TelesalesScheduleDbContext db, DateTime monday, DateTime sunday, ScheduleView model, int errCount)
         {
             var computers = db.Computers.ToList();
 
             for (int i = 1; i <= computers.Count; i++)
             {
                 var c = db.Computers.Find(i);
-                var schedule = c.Schedules.Where(s => s.StartDate == monday && s.EndDate == sunday);
-                if (schedule.Count() == 0)
+                var schedule = c.Schedules.Where(s => s.StartDate.Date == monday.Date && s.EndDate.Date == sunday.Date).FirstOrDefault();
+                if (schedule == null)
                 {
                     var scheduleToAdd = new Schedule
                     {
-                        StartDate = monday,
-                        EndDate = sunday
+                        StartDate = monday.Date,
+                        EndDate = sunday.Date
                     };
                     c.Schedules.Add(scheduleToAdd);
                     db.SaveChanges();
                 }
                 else
                 {
-                    //
+                    int finded = 0;
+                    MondayCheck(db, monday, sunday, model, c, finded);
+
+                    if (finded != 0)
+                    {
+                        break;
+                    }
+                    if(c.Id == computers.Count() && finded == 0)
+                    {
+                        errCount = 1;
+                        break;
+                    }
 
                 }
             }
-            //monday check
+
+
+
+        }
+
+
+        private static void MondayCheck(TelesalesScheduleDbContext db, DateTime monday, DateTime sunday, ScheduleView model, Computer computer, int finded)
+        {
             if (model.MondayStart != null || model.MondayEnd != null)
             {
                 double mondayStart = double.Parse(model.MondayStart);
                 double mondayEnd = double.Parse(model.MondayEnd);
-                for (int i = 1; i <= computers.Count; i++)
-                {
-                    var comp = db.Computers.Find(i);
-                    var schedule = comp.Schedules.Where(s => s.StartDate == monday && s.EndDate == sunday).FirstOrDefault();
-                    if (mondayStart < 13 && mondayEnd <=13)
-                    {
-                        if(schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null)
-                        {
-                            schedule.MondayShiftOneStart = mondayStart;
-                            schedule.MondayShiftOneEnd = mondayEnd;
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            break;
-                        }
-                       
-                    }
-                    if (mondayStart < 13 && mondayEnd <= 17)
-                    {
-                        if (schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null && schedule.MondayShiftTwoStart == null && schedule.MondayShiftTwoEnd == null)
-                        {
-                            schedule.MondayShiftOneStart = mondayStart;
-                            schedule.MondayShiftOneEnd = 13;
-                            schedule.MondayShiftTwoStart = 13;
-                            schedule.MondayShiftTwoEnd = mondayEnd;
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            break;
-                        }
+                
 
-                    }
-                    if (mondayStart < 13 && mondayEnd <= 21 && mondayEnd - mondayStart > 8)
+                var schedule = computer.Schedules.Where(s => s.StartDate.Date == monday.Date && s.EndDate.Date == sunday.Date).FirstOrDefault();
+                if (mondayStart < 13 && mondayEnd <= 13)
+                {
+                    if (schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null)
                     {
-                        if (schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null && schedule.MondayShiftTwoStart == null && schedule.MondayShiftTwoEnd == null && schedule.MondayShiftThreeStart == null && schedule.MondayShiftThreeEnd == null)
+                        schedule.MondayShiftOneStart = mondayStart;
+                        schedule.MondayShiftOneEnd = mondayEnd;
+                        db.SaveChanges();
+                        finded = 1;
+                    }
+                    if (schedule.MondayShiftOneStart != null && schedule.MondayShiftOneEnd <= mondayStart)
+                    {
+                        schedule.MondayShiftOneEnd = mondayEnd;
+                        finded = 1;
+                    }
+
+                }
+                if (mondayStart < 13 && mondayEnd <= 17 && mondayEnd - mondayStart > 4)
+                {
+                    if (schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null && schedule.MondayShiftTwoStart == null && schedule.MondayShiftTwoEnd == null)
+                    {
+                        schedule.MondayShiftOneStart = mondayStart;
+                        schedule.MondayShiftOneEnd = 13;
+                        schedule.MondayShiftTwoStart = 13;
+                        schedule.MondayShiftTwoEnd = mondayEnd;
+                        db.SaveChanges();
+                        finded = 1;
+                    }
+                    else
+                    {
+                        //todo
+                    }
+
+                }
+                if (mondayStart < 13 && mondayEnd <= 21 && mondayEnd - mondayStart > 8)
+                {
+                    if (schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null && schedule.MondayShiftTwoStart == null && schedule.MondayShiftTwoEnd == null && schedule.MondayShiftThreeStart == null && schedule.MondayShiftThreeEnd == null)
+                    {
+                        schedule.MondayShiftOneStart = mondayStart;
+                        schedule.MondayShiftOneEnd = 13;
+                        schedule.MondayShiftTwoStart = 13;
+                        schedule.MondayShiftTwoEnd = 17;
+                        schedule.MondayShiftThreeStart = 17;
+                        schedule.MondayShiftThreeEnd = mondayEnd;
+                        db.SaveChanges();
+                        finded = 1;
+                    }
+                    else
+                    {
+                        if (schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null && schedule.MondayShiftTwoStart == null && schedule.MondayShiftTwoEnd == null && schedule.MondayShiftThreeStart >= mondayEnd)
                         {
                             schedule.MondayShiftOneStart = mondayStart;
                             schedule.MondayShiftOneEnd = 13;
                             schedule.MondayShiftTwoStart = 13;
                             schedule.MondayShiftTwoEnd = 17;
                             schedule.MondayShiftThreeStart = 17;
-                            schedule.MondayShiftThreeEnd = mondayEnd;
                             db.SaveChanges();
-                        }
-                        else
-                        {
-                            if(schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null && schedule.MondayShiftTwoStart == null && schedule.MondayShiftTwoEnd == null && schedule.MondayShiftThreeStart >= mondayEnd)
-                            {
-                                schedule.MondayShiftOneStart = mondayStart;
-                                schedule.MondayShiftOneEnd = 13;
-                                schedule.MondayShiftTwoStart = 13;
-                                schedule.MondayShiftTwoEnd = 17;
-                                schedule.MondayShiftThreeStart = 17;
-                                db.SaveChanges();
-                            }
-                        }
-
-                    }
-                    if (mondayStart >= 13 && mondayEnd <= 17)
-                    {
-                        if (schedule.MondayShiftTwoStart == null && schedule.MondayShiftTwoEnd == null)
-                        {
-                            schedule.MondayShiftTwoStart = mondayStart;
-                            schedule.MondayShiftTwoEnd = mondayEnd;
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            if(schedule.MondayShiftTwoEnd <= mondayStart)
-                            {
-                                schedule.MondayShiftTwoEnd = mondayStart;
-                                db.SaveChanges();
-                            }
-                        }
-
-                    }
-                    else
-                    {
-                        if (schedule.MondayShiftThreeStart == null && schedule.MondayShiftThreeEnd == null)
-                        {
-                            schedule.MondayShiftThreeStart = mondayStart;
-                            schedule.MondayShiftThreeEnd = mondayEnd;
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            if(schedule.MondayShiftThreeEnd <= mondayStart)
-                            {
-                                schedule.MondayShiftThreeEnd = mondayEnd;
-                                db.SaveChanges();
-                            }
+                            finded = 1;
                         }
                     }
 
                 }
-            }
+                if (mondayStart >= 13 && mondayEnd <= 17)
+                {
+                    if (schedule.MondayShiftTwoStart == null && schedule.MondayShiftTwoEnd == null)
+                    {
+                        schedule.MondayShiftTwoStart = mondayStart;
+                        schedule.MondayShiftTwoEnd = mondayEnd;
+                        db.SaveChanges();
+                        finded = 1;
+                    }
+                    else
+                    {
+                        if (schedule.MondayShiftTwoEnd <= mondayStart)
+                        {
+                            schedule.MondayShiftTwoEnd = mondayStart;
+                            db.SaveChanges();
+                            finded = 1;
+                        }
+                    }
 
+                }
+                if (mondayStart >= 17 && mondayEnd <= 21)
+                {
+                    if (schedule.MondayShiftThreeStart == null && schedule.MondayShiftThreeEnd == null)
+                    {
+                        schedule.MondayShiftThreeStart = mondayStart;
+                        schedule.MondayShiftThreeEnd = mondayEnd;
+                        db.SaveChanges();
+                        finded = 1;
+                    }
+                    else
+                    {
+                        if (schedule.MondayShiftThreeEnd <= mondayStart)
+                        {
+                            schedule.MondayShiftThreeEnd = mondayEnd;
+                            db.SaveChanges();
+                            finded = 1;
+                        }
+                    }
+                }
+
+            }
         }
 
         public ActionResult List()

@@ -43,8 +43,8 @@ namespace TelesalesSchedule.Controllers
                     }
                     var nextSunday = nextMonday.AddDays(6);
 
-                    //chek if Employee Schedule is exist
-                    if (employee.Schedules.Select(s => s.StartDate.Date).Contains(nextMonday.Date) || employee.Schedules.Select(s => s.StartDate.Date).Contains(nextSunday.Date))
+                    //chek if Employee Schedule is exist 
+                    if (employee.Schedules.Select(s => s.StartDate.Date).Contains(nextMonday.Date) || employee.Schedules.Select(s => s.EndDate.Date).Contains(nextSunday.Date))
                     {
                         ViewBag.ErrorMessage = "Schedule already exist. If you want you can edit it!";
                         return View();
@@ -52,8 +52,8 @@ namespace TelesalesSchedule.Controllers
                     else
                     {
                         int errCount = 0;
-                        
-                        FindPlace(db, nextMonday, nextSunday, model, errCount);
+
+                        errCount = FindPlace(db, nextMonday, nextSunday, model, errCount);
                         //It's not set value to errCount I dont know why ;(
                         if (errCount == 1)
                         {
@@ -67,14 +67,14 @@ namespace TelesalesSchedule.Controllers
             return RedirectToAction("List");
         }
 
-        private static void FindPlace(TelesalesScheduleDbContext db, DateTime monday, DateTime sunday, ScheduleView model, int errCount)
+        private static int FindPlace(TelesalesScheduleDbContext db, DateTime monday, DateTime sunday, ScheduleView model, int errCount)
         {
-            var computers = db.Computers.ToList();
+            var computers = db.Computers.Include("Schedules").ToList();
 
-            for (int i = 1; i <= computers.Count; i++)
+            for (int i = 0; i < computers.Count; i++)
             {
-                var c = db.Computers.Find(i);
-                var schedule = c.Schedules.Where(s => s.StartDate.Date == monday.Date && s.EndDate.Date == sunday.Date).FirstOrDefault();
+                var c = computers[i];
+                var schedule = c.Schedules.FirstOrDefault(s => s.StartDate.Date == monday.Date && s.EndDate.Date == sunday.Date);
                 if (schedule == null)
                 {
                     var scheduleToAdd = new Schedule
@@ -83,46 +83,45 @@ namespace TelesalesSchedule.Controllers
                         EndDate = sunday.Date
                     };
                     c.Schedules.Add(scheduleToAdd);
+                    db.Entry(c).State = EntityState.Modified;
                     db.SaveChanges();
                 }
                 else
                 {
                     int finded = 0;
-                    MondayCheck(db, monday, sunday, model, c, finded);
+                    finded = MondayCheck(db, monday, sunday, model, c, finded);
 
                     if (finded != 0)
                     {
                         break;
                     }
-                    if(c.Id == computers.Count() && finded == 0)
+                    if(c.Id == computers.Count() - 1 && finded == 0) // changed
                     {
                         errCount = 1;
                         break;
                     }
-
                 }
             }
 
-
-
+            return errCount;
         }
 
 
-        private static void MondayCheck(TelesalesScheduleDbContext db, DateTime monday, DateTime sunday, ScheduleView model, Computer computer, int finded)
+        private static int MondayCheck(TelesalesScheduleDbContext db, DateTime monday, DateTime sunday, ScheduleView model, Computer computer, int finded)
         {
             if (model.MondayStart != null || model.MondayEnd != null)
             {
                 double mondayStart = double.Parse(model.MondayStart);
-                double mondayEnd = double.Parse(model.MondayEnd);
-                
+                double mondayEnd = double.Parse(model.MondayEnd);               
 
-                var schedule = computer.Schedules.Where(s => s.StartDate.Date == monday.Date && s.EndDate.Date == sunday.Date).FirstOrDefault();
+                var schedule = computer.Schedules.FirstOrDefault(s => s.StartDate.Date == monday.Date && s.EndDate.Date == sunday.Date);
                 if (mondayStart < 13 && mondayEnd <= 13)
                 {
                     if (schedule.MondayShiftOneStart == null && schedule.MondayShiftOneEnd == null)
                     {
                         schedule.MondayShiftOneStart = mondayStart;
                         schedule.MondayShiftOneEnd = mondayEnd;
+                        db.Entry(schedule).State = EntityState.Modified; // added
                         db.SaveChanges();
                         finded = 1;
                     }
@@ -141,6 +140,7 @@ namespace TelesalesSchedule.Controllers
                         schedule.MondayShiftOneEnd = 13;
                         schedule.MondayShiftTwoStart = 13;
                         schedule.MondayShiftTwoEnd = mondayEnd;
+                        db.Entry(schedule).State = EntityState.Modified;
                         db.SaveChanges();
                         finded = 1;
                     }
@@ -160,6 +160,7 @@ namespace TelesalesSchedule.Controllers
                         schedule.MondayShiftTwoEnd = 17;
                         schedule.MondayShiftThreeStart = 17;
                         schedule.MondayShiftThreeEnd = mondayEnd;
+                        db.Entry(schedule).State = EntityState.Modified;
                         db.SaveChanges();
                         finded = 1;
                     }
@@ -172,6 +173,7 @@ namespace TelesalesSchedule.Controllers
                             schedule.MondayShiftTwoStart = 13;
                             schedule.MondayShiftTwoEnd = 17;
                             schedule.MondayShiftThreeStart = 17;
+                            db.Entry(schedule).State = EntityState.Modified;
                             db.SaveChanges();
                             finded = 1;
                         }
@@ -184,6 +186,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         schedule.MondayShiftTwoStart = mondayStart;
                         schedule.MondayShiftTwoEnd = mondayEnd;
+                        db.Entry(schedule).State = EntityState.Modified;
                         db.SaveChanges();
                         finded = 1;
                     }
@@ -192,7 +195,8 @@ namespace TelesalesSchedule.Controllers
                         if (schedule.MondayShiftTwoEnd <= mondayStart)
                         {
                             schedule.MondayShiftTwoEnd = mondayStart;
-                            db.SaveChanges();
+                            db.Entry(schedule).State = EntityState.Modified;
+                            db.SaveChanges();    
                             finded = 1;
                         }
                     }
@@ -204,6 +208,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         schedule.MondayShiftThreeStart = mondayStart;
                         schedule.MondayShiftThreeEnd = mondayEnd;
+                        db.Entry(schedule).State = EntityState.Modified;
                         db.SaveChanges();
                         finded = 1;
                     }
@@ -212,6 +217,7 @@ namespace TelesalesSchedule.Controllers
                         if (schedule.MondayShiftThreeEnd <= mondayStart)
                         {
                             schedule.MondayShiftThreeEnd = mondayEnd;
+                            db.Entry(schedule).State = EntityState.Modified;
                             db.SaveChanges();
                             finded = 1;
                         }
@@ -219,6 +225,8 @@ namespace TelesalesSchedule.Controllers
                 }
 
             }
+
+            return finded;
         }
 
         public ActionResult List()

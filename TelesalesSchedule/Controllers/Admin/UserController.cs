@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using TelesalesSchedule.Extensions;
 using TelesalesSchedule.Models;
 
 namespace TelesalesSchedule.Controllers.Admin
@@ -106,6 +107,8 @@ namespace TelesalesSchedule.Controllers.Admin
                     context.Entry(user).State = EntityState.Modified;
                     context.SaveChanges();
 
+                    this.AddNotification("User edited", NotificationType.INFO);
+
                     return RedirectToAction("List");
                 }
             }
@@ -165,6 +168,8 @@ namespace TelesalesSchedule.Controllers.Admin
                 // Delete user and save changes
                 context.Users.Remove(user);
                 context.SaveChanges();
+
+                this.AddNotification("User deleted.", NotificationType.WARNING);
 
                 return RedirectToAction("List");
             }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using TelesalesSchedule.Extensions;
 using TelesalesSchedule.Models;
 
 
@@ -57,6 +58,8 @@ namespace TelesalesSchedule.Controllers.Admin
 
                         db.Employees.Add(emp);
                         db.SaveChanges();
+
+                        this.AddNotification("Employee created.", NotificationType.SUCCESS);
                     }
 
                     return RedirectToAction("List");
@@ -152,6 +155,8 @@ namespace TelesalesSchedule.Controllers.Admin
                     context.Entry(employee).State = EntityState.Modified;
                     context.SaveChanges();
 
+                    this.AddNotification("Employee edited.", NotificationType.INFO);
+                    
                     return RedirectToAction("List");
                 }
             }

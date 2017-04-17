@@ -17,12 +17,14 @@ namespace TelesalesSchedule.Controllers
         }
 
         //Get: 
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Create(ScheduleView model)
         {
             using (var db = new TelesalesScheduleDbContext())

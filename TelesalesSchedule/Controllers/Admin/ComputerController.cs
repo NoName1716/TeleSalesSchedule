@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using TelesalesSchedule.Extensions;
 using TelesalesSchedule.Models;
 
 namespace TelesalesSchedule.Controllers.Admin
@@ -48,6 +49,8 @@ namespace TelesalesSchedule.Controllers.Admin
                     context.Computers.Add(computer);
                     context.SaveChanges();
 
+                    this.AddNotification("Computer created.", NotificationType.SUCCESS);
+
                     return RedirectToAction("List");
                 }
             }
@@ -89,6 +92,8 @@ namespace TelesalesSchedule.Controllers.Admin
                 {
                     context.Entry(computer).State = EntityState.Modified;
                     context.SaveChanges();
+
+                    this.AddNotification("Computer edited.", NotificationType.INFO);
 
                     return RedirectToAction("List");
                 }

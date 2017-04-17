@@ -1,4 +1,4 @@
-﻿@model TelesalesSchedule.Models.Employee
+﻿@model TelesalesSchedule.Models.EditEmployeeViewModel
 @{
     ViewBag.Title = "Create";
 }
@@ -23,9 +23,9 @@
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.Manager.FullName, new { @class = "control-label col-sm-4" })
+                @Html.LabelFor(m => m.ManagerFullName, new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
-                    @Html.TextBoxFor(m => m.Manager.FullName, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.ManagerFullName, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
@@ -36,25 +36,25 @@
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.FullTimeAgent, new { @class = "control-label col-sm-4" })
-                <div class="col-sm-4">
+                <div class="col-sm-1">
                     @Html.CheckBoxFor(m => m.FullTimeAgent, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.SaveDeskAgent, new { @class = "control-label col-sm-4" })
-                <div class="col-sm-4">
+                <div class="col-sm-1">
                     @Html.CheckBoxFor(m => m.SaveDeskAgent, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.SeniorSpecialist, new { @class = "control-label col-sm-4" })
-                <div class="col-sm-4">
+                <div class="col-sm-1">
                     @Html.CheckBoxFor(m => m.SeniorSpecialist, new { @class = "form-control", @rows = "7" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.IsDeleted, new { @class = "control-label col-sm-4" })
-                <div class="col-sm-4">
+                <div class="col-sm-1">
                     @Html.CheckBoxFor(m => m.IsDeleted, new { @class = "form-control" })
                 </div>
             </div>

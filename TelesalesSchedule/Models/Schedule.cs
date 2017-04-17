@@ -143,6 +143,8 @@ namespace TelesalesSchedule.Models
         [Range(17, 21)]
         public double? SundayShiftThreeEnd { get; set; }
 
+        public double? Hours { get; set; }
+
         public virtual ICollection<Employee> Employees { get; set; }
 
         public virtual ICollection<Computer> Computers { get; set; }

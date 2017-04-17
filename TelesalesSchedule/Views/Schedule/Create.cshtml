@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Create";
 }
-@{ 
+@{
     List<SelectListItem> hoursList = new List<SelectListItem>();
     hoursList.Add(new SelectListItem
     {
@@ -11,18 +11,8 @@
     });
     hoursList.Add(new SelectListItem
     {
-        Text = "9:30",
-        Value = "9.5"
-    });
-    hoursList.Add(new SelectListItem
-    {
         Text = "10:00",
         Value = "10"
-    });
-    hoursList.Add(new SelectListItem
-    {
-        Text = "10:30",
-        Value = "10.5"
     });
     hoursList.Add(new SelectListItem
     {
@@ -31,18 +21,8 @@
     });
     hoursList.Add(new SelectListItem
     {
-        Text = "11:30",
-        Value = "11.5"
-    });
-    hoursList.Add(new SelectListItem
-    {
         Text = "12:00",
         Value = "12"
-    });
-    hoursList.Add(new SelectListItem
-    {
-        Text = "12:30",
-        Value = "12.5"
     });
     hoursList.Add(new SelectListItem
     {
@@ -51,18 +31,8 @@
     });
     hoursList.Add(new SelectListItem
     {
-        Text = "13:30",
-        Value = "13.5"
-    });
-    hoursList.Add(new SelectListItem
-    {
         Text = "14:00",
         Value = "14"
-    });
-    hoursList.Add(new SelectListItem
-    {
-        Text = "14:30",
-        Value = "14.5"
     });
     hoursList.Add(new SelectListItem
     {
@@ -71,18 +41,8 @@
     });
     hoursList.Add(new SelectListItem
     {
-        Text = "15:30",
-        Value = "15.5"
-    });
-    hoursList.Add(new SelectListItem
-    {
         Text = "16:00",
         Value = "16"
-    });
-    hoursList.Add(new SelectListItem
-    {
-        Text = "16:30",
-        Value = "16.5"
     });
     hoursList.Add(new SelectListItem
     {
@@ -91,18 +51,8 @@
     });
     hoursList.Add(new SelectListItem
     {
-        Text = "17:30",
-        Value = "17.5"
-    });
-    hoursList.Add(new SelectListItem
-    {
         Text = "18:00",
         Value = "18"
-    });
-    hoursList.Add(new SelectListItem
-    {
-        Text = "18:30",
-        Value = "18.5"
     });
     hoursList.Add(new SelectListItem
     {
@@ -111,18 +61,8 @@
     });
     hoursList.Add(new SelectListItem
     {
-        Text = "19:30",
-        Value = "19.5"
-    });
-    hoursList.Add(new SelectListItem
-    {
         Text = "20:00",
         Value = "20"
-    });
-    hoursList.Add(new SelectListItem
-    {
-        Text = "20:30",
-        Value = "20.5"
     });
     hoursList.Add(new SelectListItem
     {
@@ -139,7 +79,7 @@
             @Html.ValidationSummary("", new { @class = "text-danger" })
             <p style="text-align:center;" class="text-danger">@ViewBag.ErrorMessage</p>
             <div class="form-group">
-                <p style="text-align:center;" class="text-danger">@ViewBag.ErrorMessage</p>
+                <p style="text-align:center;" class="text-danger">@ViewBag.MondayError</p>
                 @Html.Label("Monday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
                     @Html.DropDownListFor(m => m.MondayStart, hoursList, "--Select Hour--")
@@ -147,6 +87,7 @@
                 </div>
             </div>
             <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.ThuesdayError</p>
                 @Html.Label("Thuesday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
                     @Html.DropDownListFor(m => m.ThuesdayStart, hoursList, "--Select Hour--")
@@ -154,13 +95,15 @@
                 </div>
             </div>
             <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.WednesdayError</p>
                 @Html.Label("Wednesday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
-                   @Html.DropDownListFor(m => m.WednesdayStart, hoursList, "--Select Hour--")
-                @Html.DropDownListFor(m => m.WednesdayEnd, hoursList, "--Select Hour--")
+                    @Html.DropDownListFor(m => m.WednesdayStart, hoursList, "--Select Hour--")
+                    @Html.DropDownListFor(m => m.WednesdayEnd, hoursList, "--Select Hour--")
                 </div>
             </div>
             <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.ThursdayError</p>
                 @Html.Label("Thursday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
                     @Html.DropDownListFor(m => m.ThursdayStart, hoursList, "--Select Hour--")
@@ -168,13 +111,15 @@
                 </div>
             </div>
             <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.FridayError</p>
                 @Html.Label("Friday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
-                   @Html.DropDownListFor(m => m.FridayStart, hoursList, "--Select Hour--")
-                @Html.DropDownListFor(m => m.FridayEnd, hoursList, "--Select Hour--")
+                    @Html.DropDownListFor(m => m.FridayStart, hoursList, "--Select Hour--")
+                    @Html.DropDownListFor(m => m.FridayEnd, hoursList, "--Select Hour--")
                 </div>
             </div>
             <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.SaturdayError</p>
                 @Html.Label("Saturday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
                     @Html.DropDownListFor(m => m.SaturdayStart, hoursList, "--Select Hour--")
@@ -182,6 +127,7 @@
                 </div>
             </div>
             <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.SundayError</p>
                 @Html.Label("Sunday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
                     @Html.DropDownListFor(m => m.SundayStart, hoursList, "--Select Hour--")
@@ -190,8 +136,8 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-4 col-sm-offset-4">
+                    @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-default" })
                     <input type="submit" value="Create" class="btn btn-success" />
-                    @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-info" })
                 </div>
             </div>
         }

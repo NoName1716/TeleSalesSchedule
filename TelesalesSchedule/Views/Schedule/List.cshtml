@@ -14,6 +14,7 @@
                     <th>Id</th>
                     <th>StartDate</th>
                     <th>EndDate</th>
+                    <th>Working Hours</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -23,8 +24,9 @@
                 {
                     <tr>
                         <td>@schedule.Id</td>
-                        <td>@schedule.StartDate</td>
-                        <td>@schedule.EndDate</td>
+                        <td>@schedule.StartDate.Date</td>
+                        <td>@schedule.EndDate.Date</td>
+                        <td>@schedule.Hours</td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", "Schedule", new { @id = schedule.Id }, null)
                             @Html.ActionLink("Delete", "Delete", "Schedule", new { @id = schedule.Id }, null)

@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using TelesalesSchedule.Extensions;
 using TelesalesSchedule.Models;
 using TelesalesSchedule.Models.ViewModels;
 
@@ -283,6 +284,7 @@ namespace TelesalesSchedule.Controllers
 
                     context.Entry(schedule).State = EntityState.Modified;
                     context.SaveChanges();
+                    this.AddNotification("Schedule edited.", NotificationType.INFO);
 
                     return RedirectToAction("List");
                 }

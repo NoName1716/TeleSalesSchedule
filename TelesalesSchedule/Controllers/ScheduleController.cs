@@ -147,7 +147,7 @@ namespace TelesalesSchedule.Controllers
 
                 var model = new ScheduleView();
                 model.Id = schedule.Id;
-                model.Hours = schedule.Hours;
+                model.Hours = schedule.Hours.ToString();
 
                 //Monday
                 if (schedule.MondayShiftThreeEnd - schedule.MondayShiftOneStart == 9)
@@ -394,6 +394,7 @@ namespace TelesalesSchedule.Controllers
                     CreatePcSchedule(context, schedule.StartDate, schedule.EndDate);
 
                     string error = string.Empty;
+                    
                     error = MondayCheck(context, schedule.StartDate, schedule.EndDate, error, model);
 
                     if (!string.IsNullOrEmpty(error))
@@ -2114,7 +2115,11 @@ namespace TelesalesSchedule.Controllers
 
         private void SetScheduleProperties(TelesalesScheduleDbContext db, DateTime nextMonday, DateTime nextSunday, ScheduleView model, Schedule schedule)
         {
-            double hours = model.Hours;
+            double hours = 0;
+            if (model.Hours != null)
+            {
+                hours = double.Parse(model.Hours);
+            }
             
             //Monday
             if (model.MondayStart != null && model.MondayEnd != null)

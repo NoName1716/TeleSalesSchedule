@@ -37,6 +37,6 @@ namespace TelesalesSchedule.Models.ViewModels
 
         public string SundayEnd { get; set; }
 
-        public double Hours { get; set; }  // added
+        public string Hours { get; set; }  // added
     }
 }

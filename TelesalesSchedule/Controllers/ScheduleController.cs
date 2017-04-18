@@ -127,6 +127,259 @@ namespace TelesalesSchedule.Controllers
         }
 
         //
+        // GET: Schedule/Details
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var context = new TelesalesScheduleDbContext())
+            {
+                var schedule = context.Schedules
+                    .FirstOrDefault(s => s.Id == id);           
+
+                if (schedule == null)
+                {
+                    return HttpNotFound();
+                }
+
+                var model = new ScheduleView();
+                model.Id = schedule.Id;
+                model.Hours = schedule.Hours.ToString();
+                model.StartDate = schedule.StartDate.Day.ToString() + "." + schedule.StartDate.Month.ToString() + "." + schedule.StartDate.Year.ToString();
+                model.EndDate = schedule.EndDate.Day.ToString() + "." + schedule.EndDate.Month.ToString() + "." + schedule.EndDate.Year.ToString();
+
+                // Monday
+                if (schedule.MondayShiftOneStart != null && schedule.MondayShiftThreeEnd != null)
+                {
+                    model.MondayStart = schedule.MondayShiftOneStart.ToString();
+                    model.MondayEnd = schedule.MondayShiftThreeEnd.ToString();
+                }
+                else if (schedule.MondayShiftOneStart != null && schedule.MondayShiftTwoEnd != null)
+                {
+                    model.MondayStart = schedule.MondayShiftOneStart.ToString();
+                    model.MondayEnd = schedule.MondayShiftTwoEnd.ToString();
+                }
+                else if (schedule.MondayShiftTwoStart != null && schedule.MondayShiftThreeEnd != null)
+                {
+                    model.MondayStart = schedule.MondayShiftTwoStart.ToString();
+                    model.MondayEnd = schedule.MondayShiftThreeEnd.ToString();
+                }
+                else if (schedule.MondayShiftOneStart != null && schedule.MondayShiftOneEnd != null)
+                {
+                    model.MondayStart = schedule.MondayShiftOneStart.ToString();
+                    model.MondayEnd = schedule.MondayShiftOneEnd.ToString();
+                }
+                else if (schedule.MondayShiftTwoStart != null && schedule.MondayShiftTwoEnd != null)
+                {
+                    model.MondayStart = schedule.MondayShiftTwoStart.ToString();
+                    model.MondayEnd = schedule.MondayShiftTwoEnd.ToString();
+                }
+                else if (schedule.MondayShiftThreeStart != null && schedule.MondayShiftThreeEnd != null)
+                {
+                    model.MondayStart = schedule.MondayShiftThreeStart.ToString();
+                    model.MondayEnd = schedule.MondayShiftThreeEnd.ToString();
+                }
+
+                // Thuesday
+                if (schedule.ThuesdayShiftOneStart != null && schedule.ThuesdayShiftThreeEnd != null)
+                {
+                    model.ThuesdayStart = schedule.ThuesdayShiftOneStart.ToString();
+                    model.ThuesdayEnd = schedule.ThuesdayShiftThreeEnd.ToString();
+                }
+                else if (schedule.ThuesdayShiftOneStart != null && schedule.ThuesdayShiftTwoEnd != null)
+                {
+                    model.ThuesdayStart = schedule.ThuesdayShiftOneStart.ToString();
+                    model.ThuesdayEnd = schedule.ThuesdayShiftTwoEnd.ToString();
+                }
+                else if (schedule.ThuesdayShiftTwoStart != null && schedule.ThuesdayShiftThreeEnd != null)
+                {
+                    model.ThuesdayStart = schedule.ThuesdayShiftTwoStart.ToString();
+                    model.ThuesdayEnd = schedule.ThuesdayShiftThreeEnd.ToString();
+                }
+                else if (schedule.ThuesdayShiftOneStart != null && schedule.ThuesdayShiftOneEnd != null)
+                {
+                    model.ThuesdayStart = schedule.ThuesdayShiftOneStart.ToString();
+                    model.ThuesdayEnd = schedule.ThuesdayShiftOneEnd.ToString();
+                }
+                else if (schedule.ThuesdayShiftTwoStart != null && schedule.ThuesdayShiftTwoEnd != null)
+                {
+                    model.ThuesdayStart = schedule.ThuesdayShiftTwoStart.ToString();
+                    model.ThuesdayEnd = schedule.ThuesdayShiftTwoEnd.ToString();
+                }
+                else if (schedule.ThuesdayShiftThreeStart != null && schedule.ThuesdayShiftThreeEnd != null)
+                {
+                    model.ThuesdayStart = schedule.ThuesdayShiftThreeStart.ToString();
+                    model.ThuesdayEnd = schedule.ThuesdayShiftThreeEnd.ToString();
+                }
+
+                // Wednesday
+                if (schedule.WednesdayShiftOneStart != null && schedule.WednesdayShiftThreeEnd != null)
+                {
+                    model.WednesdayStart = schedule.WednesdayShiftOneStart.ToString();
+                    model.WednesdayEnd = schedule.WednesdayShiftThreeEnd.ToString();
+                }
+                else if (schedule.WednesdayShiftOneStart != null && schedule.WednesdayShiftTwoEnd != null)
+                {
+                    model.WednesdayStart = schedule.WednesdayShiftOneStart.ToString();
+                    model.WednesdayEnd = schedule.WednesdayShiftTwoEnd.ToString();
+                }
+                else if (schedule.WednesdayShiftTwoStart != null && schedule.WednesdayShiftThreeEnd != null)
+                {
+                    model.WednesdayStart = schedule.WednesdayShiftTwoStart.ToString();
+                    model.WednesdayEnd = schedule.WednesdayShiftThreeEnd.ToString();
+                }
+                else if (schedule.WednesdayShiftOneStart != null && schedule.WednesdayShiftOneEnd != null)
+                {
+                    model.WednesdayStart = schedule.WednesdayShiftOneStart.ToString();
+                    model.WednesdayEnd = schedule.WednesdayShiftOneEnd.ToString();
+                }
+                else if (schedule.WednesdayShiftTwoStart != null && schedule.WednesdayShiftTwoEnd != null)
+                {
+                    model.WednesdayStart = schedule.WednesdayShiftTwoStart.ToString();
+                    model.WednesdayEnd = schedule.WednesdayShiftTwoEnd.ToString();
+                }
+                else if (schedule.WednesdayShiftThreeStart != null && schedule.WednesdayShiftThreeEnd != null)
+                {
+                    model.WednesdayStart = schedule.WednesdayShiftThreeStart.ToString();
+                    model.WednesdayEnd = schedule.WednesdayShiftThreeEnd.ToString();
+                }
+
+                // Thursday
+                if (schedule.ThursdayShiftOneStart != null && schedule.ThursdayShiftThreeEnd != null)
+                {
+                    model.ThursdayStart = schedule.ThursdayShiftOneStart.ToString();
+                    model.ThursdayEnd = schedule.ThursdayShiftThreeEnd.ToString();
+                }
+                else if (schedule.ThursdayShiftOneStart != null && schedule.ThursdayShiftTwoEnd != null)
+                {
+                    model.ThursdayStart = schedule.ThursdayShiftOneStart.ToString();
+                    model.ThursdayEnd = schedule.ThursdayShiftTwoEnd.ToString();
+                }
+                else if (schedule.ThursdayShiftTwoStart != null && schedule.ThursdayShiftThreeEnd != null)
+                {
+                    model.ThursdayStart = schedule.ThursdayShiftTwoStart.ToString();
+                    model.ThursdayEnd = schedule.ThursdayShiftThreeEnd.ToString();
+                }
+                else if (schedule.ThursdayShiftOneStart != null && schedule.ThursdayShiftOneEnd != null)
+                {
+                    model.ThursdayStart = schedule.ThursdayShiftOneStart.ToString();
+                    model.ThursdayEnd = schedule.ThursdayShiftOneEnd.ToString();
+                }
+                else if (schedule.ThursdayShiftTwoStart != null && schedule.ThursdayShiftTwoEnd != null)
+                {
+                    model.ThursdayStart = schedule.ThursdayShiftTwoStart.ToString();
+                    model.ThursdayEnd = schedule.ThursdayShiftTwoEnd.ToString();
+                }
+                else if (schedule.ThursdayShiftThreeStart != null && schedule.ThursdayShiftThreeEnd != null)
+                {
+                    model.ThursdayStart = schedule.ThursdayShiftThreeStart.ToString();
+                    model.ThursdayEnd = schedule.ThursdayShiftThreeEnd.ToString();
+                }
+
+                // Friday
+                if (schedule.FridayShiftOneStart != null && schedule.FridayShiftThreeEnd != null)
+                {
+                    model.FridayStart = schedule.FridayShiftOneStart.ToString();
+                    model.FridayEnd = schedule.FridayShiftThreeEnd.ToString();
+                }
+                else if (schedule.FridayShiftOneStart != null && schedule.FridayShiftTwoEnd != null)
+                {
+                    model.FridayStart = schedule.FridayShiftOneStart.ToString();
+                    model.FridayEnd = schedule.FridayShiftTwoEnd.ToString();
+                }
+                else if (schedule.FridayShiftTwoStart != null && schedule.FridayShiftThreeEnd != null)
+                {
+                    model.FridayStart = schedule.FridayShiftTwoStart.ToString();
+                    model.FridayEnd = schedule.FridayShiftThreeEnd.ToString();
+                }
+                else if (schedule.FridayShiftOneStart != null && schedule.FridayShiftOneEnd != null)
+                {
+                    model.FridayStart = schedule.FridayShiftOneStart.ToString();
+                    model.FridayEnd = schedule.FridayShiftOneEnd.ToString();
+                }
+                else if (schedule.FridayShiftTwoStart != null && schedule.FridayShiftTwoEnd != null)
+                {
+                    model.FridayStart = schedule.FridayShiftTwoStart.ToString();
+                    model.FridayEnd = schedule.FridayShiftTwoEnd.ToString();
+                }
+                else if (schedule.FridayShiftThreeStart != null && schedule.FridayShiftThreeEnd != null)
+                {
+                    model.FridayStart = schedule.FridayShiftThreeStart.ToString();
+                    model.FridayEnd = schedule.FridayShiftThreeEnd.ToString();
+                }
+
+                // Saturday
+                if (schedule.SaturdayShiftOneStart != null && schedule.SaturdayShiftThreeEnd != null)
+                {
+                    model.SaturdayStart = schedule.SaturdayShiftOneStart.ToString();
+                    model.SaturdayEnd = schedule.SaturdayShiftThreeEnd.ToString();
+                }
+                else if (schedule.SaturdayShiftOneStart != null && schedule.SaturdayShiftTwoEnd != null)
+                {
+                    model.SaturdayStart = schedule.SaturdayShiftOneStart.ToString();
+                    model.SaturdayEnd = schedule.SaturdayShiftTwoEnd.ToString();
+                }
+                else if (schedule.SaturdayShiftTwoStart != null && schedule.SaturdayShiftThreeEnd != null)
+                {
+                    model.SaturdayStart = schedule.SaturdayShiftTwoStart.ToString();
+                    model.SaturdayEnd = schedule.SaturdayShiftThreeEnd.ToString();
+                }
+                else if (schedule.SaturdayShiftOneStart != null && schedule.SaturdayShiftOneEnd != null)
+                {
+                    model.SaturdayStart = schedule.SaturdayShiftOneStart.ToString();
+                    model.SaturdayEnd = schedule.SaturdayShiftOneEnd.ToString();
+                }
+                else if (schedule.SaturdayShiftTwoStart != null && schedule.SaturdayShiftTwoEnd != null)
+                {
+                    model.SaturdayStart = schedule.SaturdayShiftTwoStart.ToString();
+                    model.SaturdayEnd = schedule.SaturdayShiftTwoEnd.ToString();
+                }
+                else if (schedule.SaturdayShiftThreeStart != null && schedule.SaturdayShiftThreeEnd != null)
+                {
+                    model.SaturdayStart = schedule.SaturdayShiftThreeStart.ToString();
+                    model.SaturdayEnd = schedule.SaturdayShiftThreeEnd.ToString();
+                }
+
+                // Sunday
+                if (schedule.SundayShiftOneStart != null && schedule.SundayShiftThreeEnd != null)
+                {
+                    model.SundayStart = schedule.SundayShiftOneStart.ToString();
+                    model.SundayEnd = schedule.SundayShiftThreeEnd.ToString();
+                }
+                else if (schedule.SundayShiftOneStart != null && schedule.SundayShiftTwoEnd != null)
+                {
+                    model.SundayStart = schedule.SundayShiftOneStart.ToString();
+                    model.SundayEnd = schedule.SundayShiftTwoEnd.ToString();
+                }
+                else if (schedule.SundayShiftTwoStart != null && schedule.SundayShiftThreeEnd != null)
+                {
+                    model.SundayStart = schedule.SundayShiftTwoStart.ToString();
+                    model.SundayEnd = schedule.SundayShiftThreeEnd.ToString();
+                }
+                else if (schedule.SundayShiftOneStart != null && schedule.SundayShiftOneEnd != null)
+                {
+                    model.SundayStart = schedule.SundayShiftOneStart.ToString();
+                    model.SundayEnd = schedule.SundayShiftOneEnd.ToString();
+                }
+                else if (schedule.SundayShiftTwoStart != null && schedule.SundayShiftTwoEnd != null)
+                {
+                    model.SundayStart = schedule.SundayShiftTwoStart.ToString();
+                    model.SundayEnd = schedule.SundayShiftTwoEnd.ToString();
+                }
+                else if (schedule.SundayShiftThreeStart != null && schedule.SundayShiftThreeEnd != null)
+                {
+                    model.SundayStart = schedule.SundayShiftThreeStart.ToString();
+                    model.SundayEnd = schedule.SundayShiftThreeEnd.ToString();
+                }
+
+                return View(model);
+            }
+        }
+
+        //
         // GET: Schedule/Edit
         public ActionResult Edit(int? id)
         {
@@ -149,226 +402,225 @@ namespace TelesalesSchedule.Controllers
                 model.Id = schedule.Id;
                 model.Hours = schedule.Hours.ToString();
 
-                //Monday
-                if (schedule.MondayShiftThreeEnd - schedule.MondayShiftOneStart == 9)
+                // Monday
+                if (schedule.MondayShiftOneStart != null && schedule.MondayShiftThreeEnd != null)
                 {
                     model.MondayStart = schedule.MondayShiftOneStart.ToString();
                     model.MondayEnd = schedule.MondayShiftThreeEnd.ToString();
                 }
-                else if (schedule.MondayShiftTwoEnd - schedule.MondayShiftOneStart == 8)
+                else if (schedule.MondayShiftOneStart != null && schedule.MondayShiftTwoEnd != null)
                 {
                     model.MondayStart = schedule.MondayShiftOneStart.ToString();
                     model.MondayEnd = schedule.MondayShiftTwoEnd.ToString();
                 }
-                else if (schedule.MondayShiftThreeEnd - schedule.MondayShiftTwoStart == 8)
+                else if (schedule.MondayShiftTwoStart != null && schedule.MondayShiftThreeEnd != null)
                 {
                     model.MondayStart = schedule.MondayShiftTwoStart.ToString();
                     model.MondayEnd = schedule.MondayShiftThreeEnd.ToString();
                 }
-                else if (schedule.MondayShiftOneEnd - schedule.MondayShiftOneStart == 4)
+                else if (schedule.MondayShiftOneStart != null && schedule.MondayShiftOneEnd != null)
                 {
                     model.MondayStart = schedule.MondayShiftOneStart.ToString();
                     model.MondayEnd = schedule.MondayShiftOneEnd.ToString();
                 }
-                else if (schedule.MondayShiftTwoEnd - schedule.MondayShiftTwoStart == 4)
+                else if (schedule.MondayShiftTwoStart != null && schedule.MondayShiftTwoEnd != null)
                 {
                     model.MondayStart = schedule.MondayShiftTwoStart.ToString();
                     model.MondayEnd = schedule.MondayShiftTwoEnd.ToString();
                 }
-                else if (schedule.MondayShiftThreeEnd - schedule.MondayShiftThreeStart == 4)
+                else if (schedule.MondayShiftThreeStart != null && schedule.MondayShiftThreeEnd != null)
                 {
                     model.MondayStart = schedule.MondayShiftThreeStart.ToString();
                     model.MondayEnd = schedule.MondayShiftThreeEnd.ToString();
                 }
 
-                //Thuesday
-                if (schedule.ThuesdayShiftThreeEnd - schedule.ThuesdayShiftOneStart == 9)
+                // Thuesday
+                if (schedule.ThuesdayShiftOneStart != null && schedule.ThuesdayShiftThreeEnd != null)
                 {
                     model.ThuesdayStart = schedule.ThuesdayShiftOneStart.ToString();
                     model.ThuesdayEnd = schedule.ThuesdayShiftThreeEnd.ToString();
                 }
-                else if (schedule.ThuesdayShiftTwoEnd - schedule.ThuesdayShiftOneStart == 8)
+                else if (schedule.ThuesdayShiftOneStart != null && schedule.ThuesdayShiftTwoEnd != null)
                 {
                     model.ThuesdayStart = schedule.ThuesdayShiftOneStart.ToString();
                     model.ThuesdayEnd = schedule.ThuesdayShiftTwoEnd.ToString();
                 }
-                else if (schedule.ThuesdayShiftThreeEnd - schedule.ThuesdayShiftTwoStart == 8)
+                else if (schedule.ThuesdayShiftTwoStart != null && schedule.ThuesdayShiftThreeEnd != null)
                 {
                     model.ThuesdayStart = schedule.ThuesdayShiftTwoStart.ToString();
                     model.ThuesdayEnd = schedule.ThuesdayShiftThreeEnd.ToString();
                 }
-                else if (schedule.ThuesdayShiftOneEnd - schedule.ThuesdayShiftOneStart == 4)
+                else if (schedule.ThuesdayShiftOneStart != null && schedule.ThuesdayShiftOneEnd != null)
                 {
                     model.ThuesdayStart = schedule.ThuesdayShiftOneStart.ToString();
                     model.ThuesdayEnd = schedule.ThuesdayShiftOneEnd.ToString();
                 }
-                else if (schedule.ThuesdayShiftTwoEnd - schedule.ThuesdayShiftTwoStart == 4)
+                else if (schedule.ThuesdayShiftTwoStart != null && schedule.ThuesdayShiftTwoEnd != null)
                 {
                     model.ThuesdayStart = schedule.ThuesdayShiftTwoStart.ToString();
                     model.ThuesdayEnd = schedule.ThuesdayShiftTwoEnd.ToString();
                 }
-                else if (schedule.ThuesdayShiftThreeEnd - schedule.ThuesdayShiftThreeStart == 4)
+                else if (schedule.ThuesdayShiftThreeStart != null && schedule.ThuesdayShiftThreeEnd != null)
                 {
                     model.ThuesdayStart = schedule.ThuesdayShiftThreeStart.ToString();
                     model.ThuesdayEnd = schedule.ThuesdayShiftThreeEnd.ToString();
                 }
 
-                //Wednesday
-                if (schedule.WednesdayShiftThreeEnd - schedule.WednesdayShiftOneStart == 9)
+                // Wednesday
+                if (schedule.WednesdayShiftOneStart != null && schedule.WednesdayShiftThreeEnd != null)
                 {
                     model.WednesdayStart = schedule.WednesdayShiftOneStart.ToString();
                     model.WednesdayEnd = schedule.WednesdayShiftThreeEnd.ToString();
                 }
-                else if (schedule.WednesdayShiftTwoEnd - schedule.WednesdayShiftOneStart == 8)
+                else if (schedule.WednesdayShiftOneStart != null && schedule.WednesdayShiftTwoEnd != null)
                 {
                     model.WednesdayStart = schedule.WednesdayShiftOneStart.ToString();
                     model.WednesdayEnd = schedule.WednesdayShiftTwoEnd.ToString();
                 }
-                else if (schedule.WednesdayShiftThreeEnd - schedule.WednesdayShiftTwoStart == 8)
+                else if (schedule.WednesdayShiftTwoStart != null && schedule.WednesdayShiftThreeEnd != null)
                 {
                     model.WednesdayStart = schedule.WednesdayShiftTwoStart.ToString();
                     model.WednesdayEnd = schedule.WednesdayShiftThreeEnd.ToString();
                 }
-                else if (schedule.WednesdayShiftOneEnd - schedule.WednesdayShiftOneStart == 4)
+                else if (schedule.WednesdayShiftOneStart != null && schedule.WednesdayShiftOneEnd != null)
                 {
                     model.WednesdayStart = schedule.WednesdayShiftOneStart.ToString();
                     model.WednesdayEnd = schedule.WednesdayShiftOneEnd.ToString();
                 }
-                else if (schedule.WednesdayShiftTwoEnd - schedule.WednesdayShiftTwoStart == 4)
+                else if (schedule.WednesdayShiftTwoStart != null && schedule.WednesdayShiftTwoEnd != null)
                 {
                     model.WednesdayStart = schedule.WednesdayShiftTwoStart.ToString();
                     model.WednesdayEnd = schedule.WednesdayShiftTwoEnd.ToString();
                 }
-                else if (schedule.WednesdayShiftThreeEnd - schedule.WednesdayShiftThreeStart == 4)
+                else if (schedule.WednesdayShiftThreeStart != null && schedule.WednesdayShiftThreeEnd != null)
                 {
                     model.WednesdayStart = schedule.WednesdayShiftThreeStart.ToString();
                     model.WednesdayEnd = schedule.WednesdayShiftThreeEnd.ToString();
                 }
 
-                //Thursday
-                if (schedule.ThursdayShiftThreeEnd - schedule.ThursdayShiftOneStart == 9)
+                // Thursday
+                if (schedule.ThursdayShiftOneStart != null && schedule.ThursdayShiftThreeEnd != null)
                 {
                     model.ThursdayStart = schedule.ThursdayShiftOneStart.ToString();
                     model.ThursdayEnd = schedule.ThursdayShiftThreeEnd.ToString();
                 }
-                else if (schedule.ThursdayShiftTwoEnd - schedule.ThursdayShiftOneStart == 8)
+                else if (schedule.ThursdayShiftOneStart != null && schedule.ThursdayShiftTwoEnd != null)
                 {
                     model.ThursdayStart = schedule.ThursdayShiftOneStart.ToString();
                     model.ThursdayEnd = schedule.ThursdayShiftTwoEnd.ToString();
                 }
-                else if (schedule.ThursdayShiftThreeEnd - schedule.ThursdayShiftTwoStart == 8)
+                else if (schedule.ThursdayShiftTwoStart != null && schedule.ThursdayShiftThreeEnd != null)
                 {
                     model.ThursdayStart = schedule.ThursdayShiftTwoStart.ToString();
                     model.ThursdayEnd = schedule.ThursdayShiftThreeEnd.ToString();
                 }
-                else if (schedule.ThursdayShiftOneEnd - schedule.ThursdayShiftOneStart == 4)
+                else if (schedule.ThursdayShiftOneStart != null && schedule.ThursdayShiftOneEnd != null)
                 {
                     model.ThursdayStart = schedule.ThursdayShiftOneStart.ToString();
                     model.ThursdayEnd = schedule.ThursdayShiftOneEnd.ToString();
                 }
-                else if (schedule.ThursdayShiftTwoEnd - schedule.ThursdayShiftTwoStart == 4)
+                else if (schedule.ThursdayShiftTwoStart != null && schedule.ThursdayShiftTwoEnd != null)
                 {
                     model.ThursdayStart = schedule.ThursdayShiftTwoStart.ToString();
                     model.ThursdayEnd = schedule.ThursdayShiftTwoEnd.ToString();
                 }
-                else if (schedule.ThursdayShiftThreeEnd - schedule.ThursdayShiftThreeStart == 4)
+                else if (schedule.ThursdayShiftThreeStart != null && schedule.ThursdayShiftThreeEnd != null)
                 {
                     model.ThursdayStart = schedule.ThursdayShiftThreeStart.ToString();
                     model.ThursdayEnd = schedule.ThursdayShiftThreeEnd.ToString();
                 }
 
-                //Friday
-                if (schedule.FridayShiftThreeEnd - schedule.FridayShiftOneStart == 9)
+                // Friday
+                if (schedule.FridayShiftOneStart != null && schedule.FridayShiftThreeEnd != null)
                 {
                     model.FridayStart = schedule.FridayShiftOneStart.ToString();
                     model.FridayEnd = schedule.FridayShiftThreeEnd.ToString();
                 }
-                else if (schedule.FridayShiftTwoEnd - schedule.FridayShiftOneStart == 8)
+                else if (schedule.FridayShiftOneStart != null && schedule.FridayShiftTwoEnd != null)
                 {
                     model.FridayStart = schedule.FridayShiftOneStart.ToString();
                     model.FridayEnd = schedule.FridayShiftTwoEnd.ToString();
                 }
-                else if (schedule.FridayShiftThreeEnd - schedule.FridayShiftTwoStart == 8)
+                else if (schedule.FridayShiftTwoStart != null && schedule.FridayShiftThreeEnd != null)
                 {
                     model.FridayStart = schedule.FridayShiftTwoStart.ToString();
                     model.FridayEnd = schedule.FridayShiftThreeEnd.ToString();
                 }
-                else if (schedule.FridayShiftOneEnd - schedule.FridayShiftOneStart == 4)
+                else if (schedule.FridayShiftOneStart != null && schedule.FridayShiftOneEnd != null)
                 {
                     model.FridayStart = schedule.FridayShiftOneStart.ToString();
                     model.FridayEnd = schedule.FridayShiftOneEnd.ToString();
                 }
-                else if (schedule.FridayShiftTwoEnd - schedule.FridayShiftTwoStart == 4)
+                else if (schedule.FridayShiftTwoStart != null && schedule.FridayShiftTwoEnd != null)
                 {
                     model.FridayStart = schedule.FridayShiftTwoStart.ToString();
                     model.FridayEnd = schedule.FridayShiftTwoEnd.ToString();
                 }
-                else if (schedule.FridayShiftThreeEnd - schedule.FridayShiftThreeStart == 4)
+                else if (schedule.FridayShiftThreeStart != null && schedule.FridayShiftThreeEnd != null)
                 {
                     model.FridayStart = schedule.FridayShiftThreeStart.ToString();
                     model.FridayEnd = schedule.FridayShiftThreeEnd.ToString();
                 }
 
-                //Saturday
-                if (schedule.SaturdayShiftThreeEnd - schedule.SaturdayShiftOneStart == 9)
+                // Saturday
+                if (schedule.SaturdayShiftOneStart != null && schedule.SaturdayShiftThreeEnd != null)
                 {
                     model.SaturdayStart = schedule.SaturdayShiftOneStart.ToString();
                     model.SaturdayEnd = schedule.SaturdayShiftThreeEnd.ToString();
                 }
-                else if (schedule.SaturdayShiftTwoEnd - schedule.SaturdayShiftOneStart == 8)
+                else if (schedule.SaturdayShiftOneStart != null && schedule.SaturdayShiftTwoEnd != null)
                 {
                     model.SaturdayStart = schedule.SaturdayShiftOneStart.ToString();
                     model.SaturdayEnd = schedule.SaturdayShiftTwoEnd.ToString();
                 }
-                else if (schedule.SaturdayShiftThreeEnd - schedule.SaturdayShiftTwoStart == 8)
+                else if (schedule.SaturdayShiftTwoStart != null && schedule.SaturdayShiftThreeEnd != null)
                 {
                     model.SaturdayStart = schedule.SaturdayShiftTwoStart.ToString();
                     model.SaturdayEnd = schedule.SaturdayShiftThreeEnd.ToString();
                 }
-                else if (schedule.SaturdayShiftOneEnd - schedule.SaturdayShiftOneStart == 4)
+                else if (schedule.SaturdayShiftOneStart != null && schedule.SaturdayShiftOneEnd != null)
                 {
                     model.SaturdayStart = schedule.SaturdayShiftOneStart.ToString();
                     model.SaturdayEnd = schedule.SaturdayShiftOneEnd.ToString();
                 }
-                else if (schedule.SaturdayShiftTwoEnd - schedule.SaturdayShiftTwoStart == 4)
+                else if (schedule.SaturdayShiftTwoStart != null && schedule.SaturdayShiftTwoEnd != null)
                 {
                     model.SaturdayStart = schedule.SaturdayShiftTwoStart.ToString();
                     model.SaturdayEnd = schedule.SaturdayShiftTwoEnd.ToString();
                 }
-                else if (schedule.SaturdayShiftThreeEnd - schedule.SaturdayShiftThreeStart == 4)
+                else if (schedule.SaturdayShiftThreeStart != null && schedule.SaturdayShiftThreeEnd != null)
                 {
                     model.SaturdayStart = schedule.SaturdayShiftThreeStart.ToString();
                     model.SaturdayEnd = schedule.SaturdayShiftThreeEnd.ToString();
                 }
 
-                //Sunday
-                if (schedule.SundayShiftThreeEnd - schedule.SundayShiftOneStart == 9)
+                // Sunday
+                if (schedule.SundayShiftOneStart != null && schedule.SundayShiftThreeEnd != null)
                 {
                     model.SundayStart = schedule.SundayShiftOneStart.ToString();
                     model.SundayEnd = schedule.SundayShiftThreeEnd.ToString();
                 }
-                else if (schedule.SundayShiftTwoEnd - schedule.SundayShiftOneStart == 8)
+                else if (schedule.SundayShiftOneStart != null && schedule.SundayShiftTwoEnd != null)
                 {
                     model.SundayStart = schedule.SundayShiftOneStart.ToString();
                     model.SundayEnd = schedule.SundayShiftTwoEnd.ToString();
                 }
-                else if (schedule.SundayShiftThreeEnd - schedule.SundayShiftTwoStart == 8)
+                else if (schedule.SundayShiftTwoStart != null && schedule.SundayShiftThreeEnd != null)
                 {
                     model.SundayStart = schedule.SundayShiftTwoStart.ToString();
                     model.SundayEnd = schedule.SundayShiftThreeEnd.ToString();
                 }
-
-                else if (schedule.SundayShiftOneEnd - schedule.SundayShiftOneStart == 4)
+                else if (schedule.SundayShiftOneStart != null && schedule.SundayShiftOneEnd != null)
                 {
                     model.SundayStart = schedule.SundayShiftOneStart.ToString();
                     model.SundayEnd = schedule.SundayShiftOneEnd.ToString();
                 }
-                else if (schedule.SundayShiftTwoEnd - schedule.SundayShiftTwoStart == 4)
+                else if (schedule.SundayShiftTwoStart != null && schedule.SundayShiftTwoEnd != null)
                 {
                     model.SundayStart = schedule.SundayShiftTwoStart.ToString();
                     model.SundayEnd = schedule.SundayShiftTwoEnd.ToString();
                 }
-                else if (schedule.SundayShiftThreeEnd - schedule.SundayShiftThreeStart == 4)
+                else if (schedule.SundayShiftThreeStart != null && schedule.SundayShiftThreeEnd != null)
                 {
                     model.SundayStart = schedule.SundayShiftThreeStart.ToString();
                     model.SundayEnd = schedule.SundayShiftThreeEnd.ToString();

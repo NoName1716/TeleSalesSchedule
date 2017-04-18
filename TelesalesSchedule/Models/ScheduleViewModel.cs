@@ -20,7 +20,7 @@ namespace TelesalesSchedule.Models
         public DateTime EndDate { get; set; }
 
         [Range(9, 13)]
-        [DisplayName("Monday")]
+        [DisplayName("Monday Shift One")]
         public double? MondayShiftOneStart { get; set; }
 
         [Range(9, 13)]

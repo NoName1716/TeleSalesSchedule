@@ -14,7 +14,7 @@
                         <li>@Html.ActionLink("Users", "List", "User")</li>
                         <li>@Html.ActionLink("Employees", "List", "Employee")</li>
                         <li>@Html.ActionLink("Computers", "List", "Computer")</li>
-                        <li>@Html.ActionLink("Schedules", "List", "Schedule")</li>
+                        <li>@Html.ActionLink("Schedules", "ListAll", "Schedule")</li>
                         <li>@Html.ActionLink("Create Employee", "Create", "Employee")</li>
                         <li>@Html.ActionLink("Create Computer", "Create", "Computer")</li>
                         <li>@Html.ActionLink("Create Schedule", "Create", "Schedule")</li>
@@ -29,6 +29,7 @@
             else
             {
                 <li>@Html.ActionLink("Create Schedule", "Create", "Schedule")</li>
+                <li>@Html.ActionLink("My Schedules", "ListMySchedules", "Schedule")</li>
                 <li>
                     @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
                 </li>

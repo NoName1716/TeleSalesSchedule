@@ -690,6 +690,7 @@ namespace TelesalesSchedule.Controllers
             }
             return error;
         }
+
         private string ThuesdayCheck(TelesalesScheduleDbContext db, DateTime nextMonday, DateTime nextSunday, string error, ScheduleView model)
         {
             if (model.ThuesdayStart != null && model.ThuesdayEnd != null)
@@ -1721,6 +1722,7 @@ namespace TelesalesSchedule.Controllers
             }
             return error;
         }
+
         private static void CreatePcSchedule(TelesalesScheduleDbContext db, DateTime nextMonday, DateTime nextSunday)
         {
             var pcs = db.Computers.ToList();
@@ -1757,12 +1759,21 @@ namespace TelesalesSchedule.Controllers
         }
 
 
-        public ActionResult List()
+        public ActionResult ListMySchedules()
         {
             using (var db = new TelesalesScheduleDbContext())
             {
                 var emp = db.Employees.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
                 var schedules = emp.Schedules.ToList();
+                return View(schedules);
+            }
+        }
+
+        public ActionResult ListAll()
+        {
+            using (var db = new TelesalesScheduleDbContext())
+            {
+                var schedules = db.Schedules.ToList();
                 return View(schedules);
             }
         }
@@ -1817,9 +1828,5 @@ namespace TelesalesSchedule.Controllers
 
             return View(model);
         }
-
-        
-
-        
     }
 }

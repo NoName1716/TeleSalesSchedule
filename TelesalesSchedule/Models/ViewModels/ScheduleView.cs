@@ -7,7 +7,7 @@ namespace TelesalesSchedule.Models.ViewModels
 {
     public class ScheduleView
     {
-
+        public int Id { get; set; }
 
         public string MondayStart { get; set; }
 
@@ -36,5 +36,7 @@ namespace TelesalesSchedule.Models.ViewModels
         public string SundayStart { get; set; }
 
         public string SundayEnd { get; set; }
+
+        public double Hours { get; set; }  // added
     }
 }

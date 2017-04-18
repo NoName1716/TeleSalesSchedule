@@ -75,7 +75,7 @@
 <div class="container">
     <div class="well">
         <h2>Edit Schedule</h2>
-        @using (Html.BeginForm("Create", "Schedule", FormMethod.Post, new { @class = "form-horizontal" }))
+        @using (Html.BeginForm("Edit", "Schedule", FormMethod.Post, new { @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary("", new { @class = "text-danger" })

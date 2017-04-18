@@ -1,428 +1,147 @@
-﻿@model TelesalesSchedule.Models.ScheduleViewModel
+﻿@model TelesalesSchedule.Models.ViewModels.ScheduleView
 
 @{
     ViewBag.Title = "Edit";
 }
 
+@{
+    List<SelectListItem> hoursList = new List<SelectListItem>();
+    hoursList.Add(new SelectListItem
+    {
+        Text = "9:00",
+        Value = "9"
+    });
+    hoursList.Add(new SelectListItem
+    {
+        Text = "10:00",
+        Value = "10"
+    });
+    hoursList.Add(new SelectListItem
+    {
+        Text = "11:00",
+        Value = "11"
+    });
+    hoursList.Add(new SelectListItem
+    {
+        Text = "12:00",
+        Value = "12"
+    });
+    hoursList.Add(new SelectListItem
+    {
+        Text = "13:00",
+        Value = "13"
+    });
+    hoursList.Add(new SelectListItem
+    {
+        Text = "14:00",
+        Value = "14"
+    });
+    hoursList.Add(new SelectListItem
+    {
+        Text = "15:00",
+        Value = "15"
+    });
+    hoursList.Add(new SelectListItem
+    {
+        Text = "16:00",
+        Value = "16"
+    });
+    hoursList.Add(new SelectListItem
+    {
+        Text = "17:00",
+        Value = "17"
+    });
+    hoursList.Add(new SelectListItem
+    {
+        Text = "18:00",
+        Value = "18"
+    });
+    hoursList.Add(new SelectListItem
+    {
+        Text = "19:00",
+        Value = "19"
+    });
+    hoursList.Add(new SelectListItem
+    {
+        Text = "20:00",
+        Value = "20"
+    });
+    hoursList.Add(new SelectListItem
+    {
+        Text = "21:00",
+        Value = "21"
+    });
+}
 <div class="container">
     <div class="well">
         <h2>Edit Schedule</h2>
-
-        @using (Html.BeginForm("Edit", "Schedule", FormMethod.Post, new { @class = "form-horizontal custom-form" }))
+        @using (Html.BeginForm("Create", "Schedule", FormMethod.Post, new { @class = "form-horizontal" }))
         {
-            @Html.ValidationSummary()
             @Html.AntiForgeryToken()
-
-            @Html.HiddenFor(m => m.Id)
-
-            <div class="container">
-                <form class="form-horizontal custom-form" role="form">
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.MondayShiftOneStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                               <div class="col-sm-2">
-                                    <div class="input-group">
-                                        <select id="shift" name="shift" data-placeholder="Choose a Shift..." class="form-control">
-                                            <option value="AF">First</option>
-                                            <option value="SQ">Second</option>
-                                            <option value="AR">Third</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.MondayShiftOneStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.MondayShiftOneEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.MondayShiftTwoStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.MondayShiftTwoStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.MondayShiftTwoEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.MondayShiftThreeStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.MondayShiftThreeStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.MondayShiftThreeEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.ThuesdayShiftOneStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.ThuesdayShiftOneStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.ThuesdayShiftOneEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.ThuesdayShiftTwoStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.ThuesdayShiftTwoStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.ThuesdayShiftTwoEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.ThuesdayShiftThreeStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.ThuesdayShiftThreeStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.ThuesdayShiftThreeEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.WednesdayShiftOneStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.WednesdayShiftOneStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.WednesdayShiftOneEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.WednesdayShiftTwoStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.WednesdayShiftTwoStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.WednesdayShiftTwoEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.WednesdayShiftThreeStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.WednesdayShiftThreeStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.WednesdayShiftThreeEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.ThursdayShiftOneStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.ThursdayShiftOneStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.ThursdayShiftOneEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.ThursdayShiftTwoStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.ThursdayShiftTwoStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.ThursdayShiftTwoEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.ThursdayShiftThreeStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.ThursdayShiftThreeStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.ThursdayShiftThreeEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.FridayShiftOneStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.FridayShiftOneStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.FridayShiftOneEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.FridayShiftTwoStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.FridayShiftTwoStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.FridayShiftTwoEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.FridayShiftThreeStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.FridayShiftThreeStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.FridayShiftThreeEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.SaturdayShiftOneStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.SaturdayShiftOneStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.SaturdayShiftOneEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.SaturdayShiftTwoStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.SaturdayShiftTwoStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.SaturdayShiftTwoEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.SaturdayShiftThreeStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.SaturdayShiftThreeStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.SaturdayShiftThreeEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.SundayShiftOneStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.SundayShiftOneStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.SundayShiftOneEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.SundayShiftTwoStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.SundayShiftTwoStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.SundayShiftTwoEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.SundayShiftThreeStart, new { @class = "col-sm-2 control-label" })
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.SundayShiftThreeStart, new { @class = "form-control", @placeholder = "Start" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(m => m.SundayShiftThreeEnd, new { @class = "form-control", @placeholder = "End" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </form>
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <p style="text-align:center;" class="text-danger">@ViewBag.ErrorMessage</p>
+            <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.MondayError</p>
+                @Html.Label("Monday", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MondayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.MondayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                </div>
             </div>
-
-        
+            <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.ThuesdayError</p>
+                @Html.Label("Thuesday", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.ThuesdayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.ThuesdayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                </div>
+            </div>
+            <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.WednesdayError</p>
+                @Html.Label("Wednesday", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.WednesdayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.WednesdayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                </div>
+            </div>
+            <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.ThursdayError</p>
+                @Html.Label("Thursday", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.ThursdayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.ThursdayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                </div>
+            </div>
+            <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.FridayError</p>
+                @Html.Label("Friday", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.FridayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.FridayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                </div>
+            </div>
+            <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.SaturdayError</p>
+                @Html.Label("Saturday", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.SaturdayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.SaturdayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                </div>
+            </div>
+            <div class="form-group">
+                <p style="text-align:center;" class="text-danger">@ViewBag.SundayError</p>
+                @Html.Label("Sunday", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.SundayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.SundayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                </div>
+            </div>
             <div class="form-group">
                 <div class="col-sm-4 col-sm-offset-4">
                     <input type="submit" value="Edit" class="btn btn-success" />
-                    @Html.ActionLink("Cancel", "List", "Schedule", null, new { @class = "btn btn-info" })
+                    @Html.ActionLink("Cancel", "ListMySchedules", "Schedule", null, new { @class = "btn btn-info" })
                 </div>
             </div>
         }
     </div>
-        </div>
-
-
-
-
-
-
-
+</div>

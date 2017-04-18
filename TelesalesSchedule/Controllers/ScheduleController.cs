@@ -1798,7 +1798,7 @@ namespace TelesalesSchedule.Controllers
                     return HttpNotFound();
                 }
 
-                var model = new ScheduleViewModel();
+                var model = new ScheduleView();
                 //this.GetValues(schedule, model);
 
                 return View(model);
@@ -1808,18 +1808,18 @@ namespace TelesalesSchedule.Controllers
         //
         // POST: Schedule/Edit
         [HttpPost]
-        public ActionResult Edit(ScheduleViewModel model)
+        public ActionResult Edit(ScheduleView model)
         {
             //ToDo 
             if (ModelState.IsValid)
             {
                 using (var context = new TelesalesScheduleDbContext())
                 {
-                    var schedule = context.Schedules
-                        .FirstOrDefault(
-                        s => s.Id == model.Id &&
-                        s.StartDate == model.StartDate &&
-                        s.EndDate == model.EndDate);
+                    //var schedule = context.Schedules
+                    //    .FirstOrDefault(
+                    //    s => s.Id == model.Id &&
+                    //    s.StartDate == model.StartDate &&
+                    //    s.EndDate == model.EndDate);
 
                     
                     return RedirectToAction("List");

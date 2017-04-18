@@ -4,13 +4,15 @@
     ViewBag.Title = "List";
 }
 
+@{var n = 0;}
+
 <div class="container">
     <div class="well">
         <h2>Computers</h2>
 
         <table class="table table-striped table-hover">
             <thead>
-                <tr>
+                <tr class="success">
                     <th>Name</th>
                     <th>ComputerName</th>
                     <th>IpAddress</th>
@@ -23,16 +25,25 @@
             <tbody>
                 @foreach (var computer in Model)
                 {
-                    <tr>
-                        <td>@computer.Name</td>
-                        <td>@computer.ComputerName</td>
-                        <td>@computer.IpAddress</td>
-                        <td>@computer.Location</td>
-                        <td>@computer.IsWorking</td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", "Computer", new { @id = computer.Id }, null)
-                        </td>
-                    </tr>
+                    if (n % 2 == 0)
+                    {
+                        @:<tr class="active">
+                    }
+                    else
+                    {
+                        @:<tr>
+                    }
+
+                    <td>@computer.Name</td>
+                    <td>@computer.ComputerName</td>
+                    <td>@computer.IpAddress</td>
+                    <td>@computer.Location</td>
+                    <td>@computer.IsWorking</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "Computer", new { @id = computer.Id }, null)
+                    </td>
+
+                    n++;
                 }
             </tbody>
         </table>

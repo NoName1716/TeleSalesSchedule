@@ -383,7 +383,7 @@ namespace TelesalesSchedule.Controllers
         [HttpPost]
         public ActionResult Edit(ScheduleView model)
         {
-            // TODO: something with computers is not right...
+            // TODO: something is not right...
             if (ModelState.IsValid)
             {
                 using (var context = new TelesalesScheduleDbContext())
@@ -394,7 +394,7 @@ namespace TelesalesSchedule.Controllers
                     CreatePcSchedule(context, schedule.StartDate, schedule.EndDate);
 
                     string error = string.Empty;
-                    
+
                     error = MondayCheck(context, schedule.StartDate, schedule.EndDate, error, model);
 
                     if (!string.IsNullOrEmpty(error))
@@ -456,7 +456,7 @@ namespace TelesalesSchedule.Controllers
                     context.Entry(schedule).State = EntityState.Modified;
                     context.SaveChanges();
 
-                    return RedirectToAction("List");
+                    return RedirectToAction("ListMySchedules");
                 }
             }
 
@@ -2120,7 +2120,7 @@ namespace TelesalesSchedule.Controllers
             {
                 hours = double.Parse(model.Hours);
             }
-            
+
             //Monday
             if (model.MondayStart != null && model.MondayEnd != null)
             {

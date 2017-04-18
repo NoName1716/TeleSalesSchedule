@@ -65,7 +65,14 @@
                         <td>@Model.SundayEnd</td>
                     </tr>
                 </tbody>
-            </table>     
+            </table>
+
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-4">
+                    @Html.ActionLink("Edit", "Edit", "Schedule", new { @id = Model.Id }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Back", "ListMySchedules", "Schedule", null, new { @class = "btn btn-info" })
+                </div>
+            </div>
         }
     </div>
 </div>

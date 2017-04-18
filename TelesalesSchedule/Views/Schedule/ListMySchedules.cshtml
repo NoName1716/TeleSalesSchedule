@@ -4,13 +4,15 @@
     ViewBag.Title = "ListMySchedules";
 }
 
+@{var n = 0;}
+
 <div class="container">
     <div class="well">
         <h2>Schedules</h2>
 
         <table class="table table-striped table-hover">
             <thead>
-                <tr>
+                <tr class="success">
                     <th>Id</th>
                     <th>StartDate</th>
                     <th>EndDate</th>
@@ -22,16 +24,25 @@
             <tbody>
                 @foreach (var schedule in Model)
                 {
-                    <tr>
-                        <td>@schedule.Id</td>
-                        <td>@schedule.StartDate.Date</td>
-                        <td>@schedule.EndDate.Date</td>
-                        <td>@schedule.Hours</td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", "Schedule", new { @id = schedule.Id }, null)
-                            @Html.ActionLink("Details", "Details", "Schedule", new { @id = schedule.Id }, null)
-                        </td>
-                    </tr>
+                    if (n % 2 == 0)
+                    {
+                        @:<tr class="alert-active">
+                    }
+                    else
+                    {
+                        @:<tr>
+                    }
+
+                    <td>@schedule.Id</td>
+                    <td>@schedule.StartDate.Date</td>
+                    <td>@schedule.EndDate.Date</td>
+                    <td>@schedule.Hours</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "Schedule", new { @id = schedule.Id }, null)
+                        @Html.ActionLink("Details", "Details", "Schedule", new { @id = schedule.Id },null)
+                    </td>
+
+                    n++;
                 }
             </tbody>
         </table>

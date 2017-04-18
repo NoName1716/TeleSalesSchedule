@@ -34,8 +34,8 @@
                     }
 
                     <td>@schedule.Id</td>
-                    <td>@schedule.StartDate.Date</td>
-                    <td>@schedule.EndDate.Date</td>
+                    <td>@schedule.StartDate.ToShortDateString()</td>
+                    <td>@schedule.EndDate.ToShortDateString()</td>
                     <td>@schedule.Hours</td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", "Schedule", new { @id = schedule.Id }, null)

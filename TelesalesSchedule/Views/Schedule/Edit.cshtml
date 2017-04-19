@@ -139,7 +139,14 @@
             <div class="form-group">
                 <div class="col-sm-4 col-sm-offset-4">
                     <input type="submit" value="Edit" class="btn btn-success" />
-                    @Html.ActionLink("Cancel", "ListMySchedules", "Schedule", null, new { @class = "btn btn-info" })
+                    @if (this.User.IsInRole("Admin"))
+                    {
+                        @Html.ActionLink("Cancel", "ListAll", "Schedule", null, new { @class = "btn btn-info" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Cancel", "ListMySchedules", "Schedule", null, new { @class = "btn btn-info" })
+                    }
                 </div>
             </div>
         }

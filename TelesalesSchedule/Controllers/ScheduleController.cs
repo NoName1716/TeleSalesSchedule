@@ -111,7 +111,7 @@ namespace TelesalesSchedule.Controllers
             using (var db = new TelesalesScheduleDbContext())
             {
                 var emp = db.Employees.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-                var schedules = emp.Schedules.OrderBy(s => s.StartDate).ToList();
+                var schedules = emp.Schedules.ToList().OrderBy(s => s.StartDate).ToList();
                 return View(schedules);
             }
         }

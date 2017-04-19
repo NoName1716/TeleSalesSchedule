@@ -8,11 +8,11 @@ namespace TelesalesSchedule.Models
 {
     public class Schedule
     {
-        public Schedule()
-        {
-            this.Employees = new HashSet<Employee>();
-            this.Computers = new HashSet<Computer>();
-        }
+        //public Schedule()
+        //{
+        //    this.Employees = new HashSet<Employee>();
+        //    this.Computers = new HashSet<Computer>();
+        //}
         public int Id { get; set; }
         //it must be Monday
         [Required]
@@ -145,8 +145,12 @@ namespace TelesalesSchedule.Models
 
         public double? Hours { get; set; }
 
-        public virtual ICollection<Employee> Employees { get; set; }
+        //public virtual ICollection<Employee> Employees { get; set; }
 
-        public virtual ICollection<Computer> Computers { get; set; }
+        //public virtual ICollection<Computer> Computers { get; set; }
+
+        public Computer Computer { get; set; }
+
+        public Employee Employee { get; set; }
     }
 }

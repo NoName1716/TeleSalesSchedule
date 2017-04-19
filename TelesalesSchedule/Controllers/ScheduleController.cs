@@ -125,7 +125,8 @@ namespace TelesalesSchedule.Controllers
         {
             using (var db = new TelesalesScheduleDbContext())
             {
-                var schedules = db.Schedules.Include("Employees").OrderBy(s => s.StartDate).ToList();
+                var schedules = db.Schedules.Where(e => e.Employee.Schedules.Count>0).OrderBy(s => s.StartDate).ToList();
+                
                 return View(schedules);
             }
         }

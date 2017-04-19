@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using TelesalesSchedule.Extensions;
@@ -30,7 +26,7 @@ namespace TelesalesSchedule.Controllers.Admin
         // POST: Employee/Create
         [HttpPost]
         [ActionName("Create")]
-        public ActionResult Create(Employee employee)
+        public ActionResult Create(EditEmployeeViewModel employee)
         {
             if (ModelState.IsValid)
             {
@@ -42,6 +38,7 @@ namespace TelesalesSchedule.Controllers.Admin
                         ViewBag.ErrorMessage = "Employee already exist!";
                         return View();
                     }
+
                     else
                     {
                         var emp = new Employee
@@ -50,12 +47,12 @@ namespace TelesalesSchedule.Controllers.Admin
                             BirthDay = Convert.ToDateTime(employee.BirthDay),
                             FullTimeAgent = employee.FullTimeAgent,
                             IsDeleted = employee.IsDeleted,
-                            Manager = db.Employees.Where(m => m.FullName == employee.Manager.FullName).FirstOrDefault(),
                             SaveDeskAgent = employee.SaveDeskAgent,
                             UserName = employee.UserName,
-                            SeniorSpecialist = employee.SeniorSpecialist
-                        };
-
+                            SeniorSpecialist = employee.SeniorSpecialist,
+                            Manager = db.Employees.Where(e => e.FullName == employee.ManagerFullName).FirstOrDefault()
+                    };
+                        
                         db.Employees.Add(emp);
                         db.SaveChanges();
 

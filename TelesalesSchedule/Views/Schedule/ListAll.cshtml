@@ -23,12 +23,13 @@
             </thead>
 
             <tbody>
-                
+
                 @foreach (var schedule in Model)
                 {
                     if (n % 2 == 0)
                     {
-                        @:<tr class="alert-active">
+                        
+                       @:<tr class="alert-active">
                     }
                     else
                     {
@@ -36,16 +37,19 @@
                     }
 
                     <td>@schedule.Id</td>
-                    <td>@schedule.StartDate.Date</td>
-                    <td>@schedule.EndDate.Date</td>  
-                    if (schedule.Employees.FirstOrDefault() != null)
-                        {
-                           <td>@schedule.Employees.FirstOrDefault().UserName</td>
-                        }
-                        else
-                        {
-                           <td>none</td>
-                        } 
+                    <td>@schedule.StartDate.Date.ToShortDateString()</td>
+                    <td>@schedule.EndDate.Date.ToShortDateString()</td>
+                    if (schedule.Employee != null)
+                    {
+                        <td>@schedule.Employee.FullName</td>
+                    }
+                    else
+                    {
+                        <td>none</td>
+                    }
+
+                    
+
                     <td>@schedule.Hours</td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", "Schedule", new { @id = schedule.Id }, null)
@@ -54,9 +58,7 @@
 
                     n++;
                 }
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
 </div>
-
-
+</div>

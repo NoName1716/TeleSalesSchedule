@@ -103,12 +103,16 @@ namespace TelesalesSchedule.Controllers
                         this.AddNotification("Schedule created.", NotificationType.SUCCESS);
                     }
                 }
-                return RedirectToAction("List");
+                return RedirectToAction("ListMySchedules");
             }
         }
 
         public ActionResult ListMySchedules()
         {
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("ListAll");
+            }
             using (var db = new TelesalesScheduleDbContext())
             {
                 var emp = db.Employees.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
@@ -440,6 +444,12 @@ namespace TelesalesSchedule.Controllers
                 model.MondayStart = schedule.MondayShiftThreeStart.ToString();
                 model.MondayEnd = schedule.MondayShiftThreeEnd.ToString();
             }
+            else
+            {
+                model.MondayStart = string.Empty;
+                model.MondayEnd = string.Empty;
+            }
+
 
             // Thuesday
             if (schedule.ThuesdayShiftOneStart != null && schedule.ThuesdayShiftThreeEnd != null)
@@ -471,6 +481,11 @@ namespace TelesalesSchedule.Controllers
             {
                 model.ThuesdayStart = schedule.ThuesdayShiftThreeStart.ToString();
                 model.ThuesdayEnd = schedule.ThuesdayShiftThreeEnd.ToString();
+            }
+            else
+            {
+                model.ThuesdayStart = string.Empty;
+                model.ThuesdayEnd = string.Empty;
             }
 
             // Wednesday
@@ -504,6 +519,11 @@ namespace TelesalesSchedule.Controllers
                 model.WednesdayStart = schedule.WednesdayShiftThreeStart.ToString();
                 model.WednesdayEnd = schedule.WednesdayShiftThreeEnd.ToString();
             }
+            else
+            {
+                model.WednesdayStart = string.Empty;
+                model.WednesdayEnd = string.Empty;
+            }
 
             // Thursday
             if (schedule.ThursdayShiftOneStart != null && schedule.ThursdayShiftThreeEnd != null)
@@ -535,6 +555,11 @@ namespace TelesalesSchedule.Controllers
             {
                 model.ThursdayStart = schedule.ThursdayShiftThreeStart.ToString();
                 model.ThursdayEnd = schedule.ThursdayShiftThreeEnd.ToString();
+            }
+            else
+            {
+                model.ThursdayStart = string.Empty;
+                model.ThursdayEnd = string.Empty;
             }
 
             // Friday
@@ -568,6 +593,11 @@ namespace TelesalesSchedule.Controllers
                 model.FridayStart = schedule.FridayShiftThreeStart.ToString();
                 model.FridayEnd = schedule.FridayShiftThreeEnd.ToString();
             }
+            else
+            {
+                model.FridayStart = string.Empty;
+                model.FridayEnd = string.Empty;
+            }
 
             // Saturday
             if (schedule.SaturdayShiftOneStart != null && schedule.SaturdayShiftThreeEnd != null)
@@ -599,6 +629,11 @@ namespace TelesalesSchedule.Controllers
             {
                 model.SaturdayStart = schedule.SaturdayShiftThreeStart.ToString();
                 model.SaturdayEnd = schedule.SaturdayShiftThreeEnd.ToString();
+            }
+            else
+            {
+                model.SaturdayStart = string.Empty;
+                model.SaturdayEnd = string.Empty;
             }
 
             // Sunday
@@ -632,6 +667,12 @@ namespace TelesalesSchedule.Controllers
                 model.SundayStart = schedule.SundayShiftThreeStart.ToString();
                 model.SundayEnd = schedule.SundayShiftThreeEnd.ToString();
             }
+            else
+            {
+                model.SundayStart = string.Empty;
+                model.SundayEnd = string.Empty;
+            }
+
         }
 
         //
@@ -652,6 +693,7 @@ namespace TelesalesSchedule.Controllers
                     model.Id = schedule.Id;
                     model.Hours = schedule.Hours.ToString();
                     ScheduleViewBuilder(schedule, model);
+                    CheckForEmptyString(model);
                     string error = string.Empty;
 
                     //If Monday Shift is Changed
@@ -661,7 +703,6 @@ namespace TelesalesSchedule.Controllers
                         {
                             error = MondayScheduleCleaner(schedule, computers, model, error);
                             ChangeEmployeeSchedule(schedule, modelView);
-                            schedule.Hours = schedule.Hours - (double.Parse(model.MondayEnd) - double.Parse(model.MondayStart));
                         }
                         else
                         {
@@ -693,7 +734,7 @@ namespace TelesalesSchedule.Controllers
                         ViewBag.MondayError = error;
                         return View();
                     }
-                    //Todo If Thuesday Shift is Changed. Only have to copy MondayScheduleCleaner , paste and them rename to ThuesdayScheduleCleaner. Inside the method have to rename properties to Thuesday etc.
+                    
 
                     // If Thuesday Shift is Changed
                     if (modelView.ThuesdayStart != model.ThuesdayStart || modelView.ThuesdayEnd != model.ThuesdayEnd)
@@ -702,7 +743,6 @@ namespace TelesalesSchedule.Controllers
                         {
                             error = ThuesdayScheduleCleaner(schedule, computers, model, error);
                             ChangeEmployeeSchedule(schedule, modelView);
-                            schedule.Hours = schedule.Hours - (double.Parse(model.ThuesdayEnd) - double.Parse(model.ThuesdayStart));
                         }
                         else
                         {
@@ -742,7 +782,6 @@ namespace TelesalesSchedule.Controllers
                         {
                             error = WednesdayScheduleCleaner(schedule, computers, model, error);
                             ChangeEmployeeSchedule(schedule, modelView);
-                            schedule.Hours = schedule.Hours - (double.Parse(model.WednesdayEnd) - double.Parse(model.WednesdayStart));
                         }
                         else
                         {
@@ -782,7 +821,6 @@ namespace TelesalesSchedule.Controllers
                         {
                             error = ThursdayScheduleCleaner(schedule, computers, model, error);
                             ChangeEmployeeSchedule(schedule, modelView);
-                            schedule.Hours = schedule.Hours - (double.Parse(model.ThursdayEnd) - double.Parse(model.ThursdayStart));
                         }
                         else
                         {
@@ -822,7 +860,6 @@ namespace TelesalesSchedule.Controllers
                         {
                             error = FridayScheduleCleaner(schedule, computers, model, error);
                             ChangeEmployeeSchedule(schedule, modelView);
-                            schedule.Hours = schedule.Hours - (double.Parse(model.FridayEnd) - double.Parse(model.FridayStart));
                         }
                         else
                         {
@@ -862,7 +899,6 @@ namespace TelesalesSchedule.Controllers
                         {
                             error = SaturdayScheduleCleaner(schedule, computers, model, error);
                             ChangeEmployeeSchedule(schedule, modelView);
-                            schedule.Hours = schedule.Hours - (double.Parse(model.SaturdayEnd) - double.Parse(model.SaturdayStart));
                         }
                         else
                         {
@@ -902,7 +938,6 @@ namespace TelesalesSchedule.Controllers
                         {
                             error = SundayScheduleCleaner(schedule, computers, model, error);
                             ChangeEmployeeSchedule(schedule, modelView);
-                            schedule.Hours = schedule.Hours - (double.Parse(model.SundayEnd) - double.Parse(model.SundayStart));
                         }
                         else
                         {
@@ -936,12 +971,53 @@ namespace TelesalesSchedule.Controllers
                     }
 
                     context.SaveChanges();
-                    
+                    this.AddNotification("Schedule changed.", NotificationType.SUCCESS);
                     return RedirectToAction("ListMySchedules");
                 }
             }
 
             return View();
+        }
+
+        private void CheckForEmptyString(ScheduleView model)
+        {
+            if(model.MondayStart == "" || model.MondayEnd == "")
+            {
+                model.MondayStart = null;
+                model.MondayEnd = null;
+            }
+            if (model.ThuesdayStart == "" || model.ThuesdayEnd == "")
+            {
+                model.ThuesdayStart = null;
+                model.ThuesdayEnd = null;
+            }
+            if (model.WednesdayStart == "" || model.WednesdayEnd == "")
+            {
+                model.WednesdayStart = null;
+                model.WednesdayEnd = null;
+            }
+            if (model.ThursdayStart == "" || model.ThursdayEnd == "")
+            {
+                model.ThursdayStart = null;
+                model.ThursdayEnd = null;
+            }
+            if (model.FridayStart == "" || model.FridayEnd == "")
+            {
+                model.FridayStart = null;
+                model.FridayEnd = null;
+            }
+            if (model.SaturdayStart == "" || model.SaturdayEnd == "")
+            {
+                model.SaturdayStart = null;
+                model.SaturdayEnd = null;
+            }
+            if (model.SundayStart == "" || model.SundayEnd == "")
+            {
+                model.SundayStart = null;
+                model.SundayEnd = null;
+            }
+
+
         }
 
         private static string MondayScheduleCleaner(Schedule schedule, List<Computer> computers, ScheduleView model, string error)

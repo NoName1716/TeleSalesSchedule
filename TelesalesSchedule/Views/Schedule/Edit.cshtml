@@ -8,6 +8,11 @@
     List<SelectListItem> hoursList = new List<SelectListItem>();
     hoursList.Add(new SelectListItem
     {
+        Text = null,
+        Value = null
+    });
+    hoursList.Add(new SelectListItem
+    {
         Text = "9:00",
         Value = "9"
     });
@@ -71,6 +76,7 @@
         Text = "21:00",
         Value = "21"
     });
+
 }
 <div class="container">
     <div class="well">
@@ -84,56 +90,56 @@
                 <p style="text-align:center;" class="text-danger">@ViewBag.MondayError</p>
                 @Html.Label("Monday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(m => m.MondayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
-                    @Html.DropDownListFor(m => m.MondayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.MondayStart, hoursList, new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.MondayEnd, hoursList, new { @style = "color : black" })
                 </div>
             </div>
             <div class="form-group">
                 <p style="text-align:center;" class="text-danger">@ViewBag.ThuesdayError</p>
                 @Html.Label("Thuesday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(m => m.ThuesdayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
-                    @Html.DropDownListFor(m => m.ThuesdayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.ThuesdayStart, hoursList, new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.ThuesdayEnd, hoursList, new { @style = "color : black" })
                 </div>
             </div>
             <div class="form-group">
                 <p style="text-align:center;" class="text-danger">@ViewBag.WednesdayError</p>
                 @Html.Label("Wednesday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(m => m.WednesdayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
-                    @Html.DropDownListFor(m => m.WednesdayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.WednesdayStart, hoursList, new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.WednesdayEnd, hoursList, new { @style = "color : black" })
                 </div>
             </div>
             <div class="form-group">
                 <p style="text-align:center;" class="text-danger">@ViewBag.ThursdayError</p>
                 @Html.Label("Thursday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(m => m.ThursdayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
-                    @Html.DropDownListFor(m => m.ThursdayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.ThursdayStart, hoursList, new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.ThursdayEnd, hoursList, new { @style = "color : black" })
                 </div>
             </div>
             <div class="form-group">
                 <p style="text-align:center;" class="text-danger">@ViewBag.FridayError</p>
                 @Html.Label("Friday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(m => m.FridayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
-                    @Html.DropDownListFor(m => m.FridayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.FridayStart, hoursList, new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.FridayEnd, hoursList, new { @style = "color : black" })
                 </div>
             </div>
             <div class="form-group">
                 <p style="text-align:center;" class="text-danger">@ViewBag.SaturdayError</p>
                 @Html.Label("Saturday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(m => m.SaturdayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
-                    @Html.DropDownListFor(m => m.SaturdayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.SaturdayStart, hoursList, new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.SaturdayEnd, hoursList, new { @style = "color : black" })
                 </div>
             </div>
             <div class="form-group">
                 <p style="text-align:center;" class="text-danger">@ViewBag.SundayError</p>
                 @Html.Label("Sunday", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(m => m.SundayStart, hoursList, "--Select Hour--", new { @style = "color : black" })
-                    @Html.DropDownListFor(m => m.SundayEnd, hoursList, "--Select Hour--", new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.SundayStart, hoursList, new { @style = "color : black" })
+                    @Html.DropDownListFor(m => m.SundayEnd, hoursList, new { @style = "color : black" })
                 </div>
             </div>
             <div class="form-group">

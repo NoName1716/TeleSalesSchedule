@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -652,6 +653,7 @@ namespace TelesalesSchedule.Controllers
                     model.Hours = schedule.Hours.ToString();
                     ScheduleViewBuilder(schedule, model);
                     string error = string.Empty;
+
                     //If Monday Shift is Changed
                     if (modelView.MondayStart != model.MondayStart || modelView.MondayEnd != model.MondayEnd)
                     {
@@ -664,6 +666,7 @@ namespace TelesalesSchedule.Controllers
                         else
                         {
                             var mondayDiff = double.Parse(modelView.MondayEnd) - double.Parse(modelView.MondayStart);
+
                             if(mondayDiff < 4)
                             {
                                 error = "Invalid Shift!";
@@ -681,11 +684,10 @@ namespace TelesalesSchedule.Controllers
                                     error = MondayCheck(context, monday, sunday, error, modelView);
                                     ChangeEmployeeSchedule(schedule, modelView);
                                 }
-
                             }
                         }
-
                     }
+
                     if (!string.IsNullOrEmpty(error))
                     {
                         ViewBag.MondayError = error;
@@ -693,10 +695,248 @@ namespace TelesalesSchedule.Controllers
                     }
                     //Todo If Thuesday Shift is Changed. Only have to copy MondayScheduleCleaner , paste and them rename to ThuesdayScheduleCleaner. Inside the method have to rename properties to Thuesday etc.
 
+                    // If Thuesday Shift is Changed
+                    if (modelView.ThuesdayStart != model.ThuesdayStart || modelView.ThuesdayEnd != model.ThuesdayEnd)
+                    {
+                        if (modelView.ThuesdayStart == null && modelView.ThuesdayEnd == null)
+                        {
+                            error = ThuesdayScheduleCleaner(schedule, computers, model, error);
+                            ChangeEmployeeSchedule(schedule, modelView);
+                            schedule.Hours = schedule.Hours - (double.Parse(model.ThuesdayEnd) - double.Parse(model.ThuesdayStart));
+                        }
+                        else
+                        {
+                            var thuesdayDiff = double.Parse(modelView.ThuesdayEnd) - double.Parse(modelView.ThuesdayStart);
+
+                            if (thuesdayDiff < 4)
+                            {
+                                error = "Invalid Shift!";
+                            }
+                            else
+                            {
+                                if (model.ThuesdayStart == null && model.ThuesdayEnd == null)
+                                {
+                                    error = ThuesdayCheck(context, monday, sunday, error, modelView);
+                                    ChangeEmployeeSchedule(schedule, modelView);
+                                }
+                                else
+                                {
+                                    error = ThuesdayScheduleCleaner(schedule, computers, model, error);
+                                    error = ThuesdayCheck(context, monday, sunday, error, modelView);
+                                    ChangeEmployeeSchedule(schedule, modelView);
+                                }
+                            }
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        ViewBag.ThuesdayError = error;
+                        return View();
+                    }
+
+                    // If Wednesday Shift is Changed
+                    if (modelView.WednesdayStart != model.WednesdayStart || modelView.WednesdayEnd != model.WednesdayEnd)
+                    {
+                        if (modelView.WednesdayStart == null && modelView.WednesdayEnd == null)
+                        {
+                            error = WednesdayScheduleCleaner(schedule, computers, model, error);
+                            ChangeEmployeeSchedule(schedule, modelView);
+                            schedule.Hours = schedule.Hours - (double.Parse(model.WednesdayEnd) - double.Parse(model.WednesdayStart));
+                        }
+                        else
+                        {
+                            var wednesdayDiff = double.Parse(modelView.WednesdayEnd) - double.Parse(modelView.WednesdayStart);
+
+                            if (wednesdayDiff < 4)
+                            {
+                                error = "Invalid Shift!";
+                            }
+                            else
+                            {
+                                if (model.WednesdayStart == null && model.WednesdayEnd == null)
+                                {
+                                    error = WednesdayCheck(context, monday, sunday, error, modelView);
+                                    ChangeEmployeeSchedule(schedule, modelView);
+                                }
+                                else
+                                {
+                                    error = WednesdayScheduleCleaner(schedule, computers, model, error);
+                                    error = WednesdayCheck(context, monday, sunday, error, modelView);
+                                    ChangeEmployeeSchedule(schedule, modelView);
+                                }
+                            }
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        ViewBag.WednesdayError = error;
+                        return View();
+                    }
+
+                    // If Thursday Shift is Changed
+                    if (modelView.ThursdayStart != model.ThursdayStart || modelView.ThursdayEnd != model.ThursdayEnd)
+                    {
+                        if (modelView.ThursdayStart == null && modelView.ThursdayEnd == null)
+                        {
+                            error = ThursdayScheduleCleaner(schedule, computers, model, error);
+                            ChangeEmployeeSchedule(schedule, modelView);
+                            schedule.Hours = schedule.Hours - (double.Parse(model.ThursdayEnd) - double.Parse(model.ThursdayStart));
+                        }
+                        else
+                        {
+                            var thursdayDiff = double.Parse(modelView.ThursdayEnd) - double.Parse(modelView.ThursdayStart);
+
+                            if (thursdayDiff < 4)
+                            {
+                                error = "Invalid Shift!";
+                            }
+                            else
+                            {
+                                if (model.ThursdayStart == null && model.ThursdayEnd == null)
+                                {
+                                    error = ThursdayCheck(context, monday, sunday, error, modelView);
+                                    ChangeEmployeeSchedule(schedule, modelView);
+                                }
+                                else
+                                {
+                                    error = ThursdayScheduleCleaner(schedule, computers, model, error);
+                                    error = ThursdayCheck(context, monday, sunday, error, modelView);
+                                    ChangeEmployeeSchedule(schedule, modelView);
+                                }
+                            }
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        ViewBag.ThursdayError = error;
+                        return View();
+                    }
+
+                    // If Friday Shift is Changed
+                    if (modelView.FridayStart != model.FridayStart || modelView.FridayEnd != model.FridayEnd)
+                    {
+                        if (modelView.FridayStart == null && modelView.FridayEnd == null)
+                        {
+                            error = FridayScheduleCleaner(schedule, computers, model, error);
+                            ChangeEmployeeSchedule(schedule, modelView);
+                            schedule.Hours = schedule.Hours - (double.Parse(model.FridayEnd) - double.Parse(model.FridayStart));
+                        }
+                        else
+                        {
+                            var fridayDiff = double.Parse(modelView.FridayEnd) - double.Parse(modelView.FridayStart);
+
+                            if (fridayDiff < 4)
+                            {
+                                error = "Invalid Shift!";
+                            }
+                            else
+                            {
+                                if (model.FridayStart == null && model.FridayEnd == null)
+                                {
+                                    error = FridayCheck(context, monday, sunday, error, modelView);
+                                    ChangeEmployeeSchedule(schedule, modelView);
+                                }
+                                else
+                                {
+                                    error = FridayScheduleCleaner(schedule, computers, model, error);
+                                    error = FridayCheck(context, monday, sunday, error, modelView);
+                                    ChangeEmployeeSchedule(schedule, modelView);
+                                }
+                            }
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        ViewBag.FridayError = error;
+                        return View();
+                    }
+
+                    // If Saturday Shift is Changed
+                    if (modelView.SaturdayStart != model.SaturdayStart || modelView.SaturdayEnd != model.SaturdayEnd)
+                    {
+                        if (modelView.SaturdayStart == null && modelView.SaturdayEnd == null)
+                        {
+                            error = SaturdayScheduleCleaner(schedule, computers, model, error);
+                            ChangeEmployeeSchedule(schedule, modelView);
+                            schedule.Hours = schedule.Hours - (double.Parse(model.SaturdayEnd) - double.Parse(model.SaturdayStart));
+                        }
+                        else
+                        {
+                            var saturdayDiff = double.Parse(modelView.SaturdayEnd) - double.Parse(modelView.SaturdayStart);
+
+                            if (saturdayDiff < 4)
+                            {
+                                error = "Invalid Shift!";
+                            }
+                            else
+                            {
+                                if (model.SaturdayStart == null && model.SaturdayEnd == null)
+                                {
+                                    error = SaturdayCheck(context, monday, sunday, error, modelView);
+                                    ChangeEmployeeSchedule(schedule, modelView);
+                                }
+                                else
+                                {
+                                    error = SaturdayScheduleCleaner(schedule, computers, model, error);
+                                    error = SaturdayCheck(context, monday, sunday, error, modelView);
+                                    ChangeEmployeeSchedule(schedule, modelView);
+                                }
+                            }
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        ViewBag.SaturdayError = error;
+                        return View();
+                    }
+
+                    // If Sunday Shift is Changed
+                    if (modelView.SundayStart != model.SundayStart || modelView.SundayEnd != model.SundayEnd)
+                    {
+                        if (modelView.SundayStart == null && modelView.SundayEnd == null)
+                        {
+                            error = SundayScheduleCleaner(schedule, computers, model, error);
+                            ChangeEmployeeSchedule(schedule, modelView);
+                            schedule.Hours = schedule.Hours - (double.Parse(model.SundayEnd) - double.Parse(model.SundayStart));
+                        }
+                        else
+                        {
+                            var sundayDiff = double.Parse(modelView.SundayEnd) - double.Parse(modelView.SundayStart);
+
+                            if (sundayDiff < 4)
+                            {
+                                error = "Invalid Shift!";
+                            }
+                            else
+                            {
+                                if (model.SundayStart == null && model.SundayEnd == null)
+                                {
+                                    error = SundayCheck(context, monday, sunday, error, modelView);
+                                    ChangeEmployeeSchedule(schedule, modelView);
+                                }
+                                else
+                                {
+                                    error = SundayScheduleCleaner(schedule, computers, model, error);
+                                    error = SundayCheck(context, monday, sunday, error, modelView);
+                                    ChangeEmployeeSchedule(schedule, modelView);
+                                }
+                            }
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        ViewBag.SundayError = error;
+                        return View();
+                    }
 
                     context.SaveChanges();
                     
-
                     return RedirectToAction("ListMySchedules");
                 }
             }
@@ -704,7 +944,7 @@ namespace TelesalesSchedule.Controllers
             return View();
         }
 
-        private static string MondayScheduleCleaner(Schedule schedule, System.Collections.Generic.List<Computer> computers, ScheduleView model, string error)
+        private static string MondayScheduleCleaner(Schedule schedule, List<Computer> computers, ScheduleView model, string error)
         {
             bool found = false;
             var mondayStart = double.Parse(model.MondayStart);
@@ -715,7 +955,6 @@ namespace TelesalesSchedule.Controllers
             {
                 if (mondayStart == 9 && mondayEnd == 13)
                 {
-
                     foreach (var c in computers)
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
@@ -726,14 +965,12 @@ namespace TelesalesSchedule.Controllers
                             pcSchedule.MondayShiftOneEnd = null;
                             found = true;
                         }
-
                     }
                 }
                 else if (mondayStart == 13 && mondayEnd == 17)
                 {
                     foreach (var c in computers)
                     {
-
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
                         if (pcSchedule.MondayShiftTwoStart == 13 && pcSchedule.MondayShiftTwoEnd == 13 && found == false)
@@ -748,7 +985,6 @@ namespace TelesalesSchedule.Controllers
                 {
                     foreach (var c in computers)
                     {
-
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
                         if (pcSchedule.MondayShiftThreeStart == 13 && pcSchedule.MondayShiftThreeEnd == 13 && found == false)
@@ -762,14 +998,12 @@ namespace TelesalesSchedule.Controllers
                 else
                 {
                     error = "Invalid shift!";
-
                 }
             }
             else if (mondayhours == 8)
             {
                 if (mondayStart == 9 && mondayEnd == 17)
                 {
-
                     foreach (var c in computers)
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
@@ -782,12 +1016,10 @@ namespace TelesalesSchedule.Controllers
                             pcSchedule.MondayShiftTwoEnd = null;
                             found = true;
                         }
-
                     }
                 }
                 else if (mondayStart == 13 && mondayEnd == 21)
                 {
-
                     foreach (var c in computers)
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
@@ -800,13 +1032,11 @@ namespace TelesalesSchedule.Controllers
                             pcSchedule.MondayShiftThreeEnd = null;
                             found = true;
                         }
-
                     }
                 }
             }
             else if (mondayStart == 9 && mondayEnd == 18)
             {
-
                 foreach (var c in computers)
                 {
                     var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
@@ -820,9 +1050,688 @@ namespace TelesalesSchedule.Controllers
                         pcSchedule.MondayShiftThreeStart = null;
                         pcSchedule.MondayShiftThreeEnd = null;
                         found = true;
+                    }
+                }
+            }
+
+            return error;
+        }
+
+        private static string ThuesdayScheduleCleaner(Schedule schedule, List<Computer> computers, ScheduleView model, string error)
+        {
+            bool found = false;
+            var thuesdayStart = double.Parse(model.ThuesdayStart);
+            var thuesdayEnd = double.Parse(model.ThuesdayEnd);
+            var thuesdayhours = thuesdayEnd - thuesdayStart;
+
+            if (thuesdayhours == 4)
+            {
+                if (thuesdayStart == 9 && thuesdayEnd == 13)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.ThuesdayShiftOneStart == 9 && pcSchedule.ThuesdayShiftOneEnd == 13 && found == false)
+                        {
+                            pcSchedule.ThuesdayShiftOneStart = null;
+                            pcSchedule.ThuesdayShiftOneEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (thuesdayStart == 13 && thuesdayEnd == 17)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.ThuesdayShiftTwoStart == 13 && pcSchedule.ThuesdayShiftTwoEnd == 13 && found == false)
+                        {
+                            pcSchedule.ThuesdayShiftTwoStart = null;
+                            pcSchedule.ThuesdayShiftTwoEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (thuesdayStart == 17 && thuesdayEnd == 21)
+                {
+                    foreach (var c in computers)
+                    {
+
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.ThuesdayShiftThreeStart == 13 && pcSchedule.ThuesdayShiftThreeEnd == 13 && found == false)
+                        {
+                            pcSchedule.ThuesdayShiftThreeStart = null;
+                            pcSchedule.ThuesdayShiftThreeEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else
+                {
+                    error = "Invalid shift!";
+
+                }
+            }
+            else if (thuesdayhours == 8)
+            {
+                if (thuesdayStart == 9 && thuesdayEnd == 17)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.ThuesdayShiftOneStart == 9 && pcSchedule.ThuesdayShiftOneEnd == 13 && pcSchedule.ThuesdayShiftTwoStart == 13 && pcSchedule.ThuesdayShiftTwoEnd == 17 && found == false)
+                        {
+                            pcSchedule.ThuesdayShiftOneStart = null;
+                            pcSchedule.ThuesdayShiftOneEnd = null;
+                            pcSchedule.ThuesdayShiftTwoStart = null;
+                            pcSchedule.ThuesdayShiftTwoEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (thuesdayStart == 13 && thuesdayEnd == 21)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.ThuesdayShiftTwoStart == 13 && pcSchedule.ThuesdayShiftTwoEnd == 17 && pcSchedule.ThuesdayShiftThreeStart == 17 && pcSchedule.ThuesdayShiftThreeEnd == 21 && found == false)
+                        {
+                            pcSchedule.ThuesdayShiftTwoStart = null;
+                            pcSchedule.ThuesdayShiftTwoEnd = null;
+                            pcSchedule.ThuesdayShiftThreeStart = null;
+                            pcSchedule.ThuesdayShiftThreeEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+            }
+            else if (thuesdayStart == 9 && thuesdayEnd == 18)
+            {
+                foreach (var c in computers)
+                {
+                    var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                    if (pcSchedule.ThuesdayShiftOneStart == 9 && pcSchedule.ThuesdayShiftOneEnd == 13 && pcSchedule.ThuesdayShiftTwoStart == 13 && pcSchedule.ThuesdayShiftTwoEnd == 17 && pcSchedule.ThuesdayShiftThreeStart == 17 && pcSchedule.ThuesdayShiftThreeEnd == 18 && found == false)
+                    {
+                        pcSchedule.ThuesdayShiftOneStart = null;
+                        pcSchedule.ThuesdayShiftOneEnd = null;
+                        pcSchedule.ThuesdayShiftTwoStart = null;
+                        pcSchedule.ThuesdayShiftTwoEnd = null;
+                        pcSchedule.ThuesdayShiftThreeStart = null;
+                        pcSchedule.ThuesdayShiftThreeEnd = null;
+                        found = true;
 
                     }
+                }
+            }
 
+            return error;
+        }
+
+        private static string WednesdayScheduleCleaner(Schedule schedule, List<Computer> computers, ScheduleView model, string error)
+        {
+            bool found = false;
+            var wednesdayStart = double.Parse(model.WednesdayStart);
+            var wednesdayEnd = double.Parse(model.WednesdayEnd);
+            var wednesdayhours = wednesdayEnd - wednesdayStart;
+
+            if (wednesdayhours == 4)
+            {
+                if (wednesdayStart == 9 && wednesdayEnd == 13)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.WednesdayShiftOneStart == 9 && pcSchedule.WednesdayShiftOneEnd == 13 && found == false)
+                        {
+                            pcSchedule.WednesdayShiftOneStart = null;
+                            pcSchedule.WednesdayShiftOneEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (wednesdayStart == 13 && wednesdayEnd == 17)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.WednesdayShiftTwoStart == 13 && pcSchedule.WednesdayShiftTwoEnd == 13 && found == false)
+                        {
+                            pcSchedule.WednesdayShiftTwoStart = null;
+                            pcSchedule.WednesdayShiftTwoEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (wednesdayStart == 17 && wednesdayEnd == 21)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.WednesdayShiftThreeStart == 13 && pcSchedule.WednesdayShiftThreeEnd == 13 && found == false)
+                        {
+                            pcSchedule.WednesdayShiftThreeStart = null;
+                            pcSchedule.WednesdayShiftThreeEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else
+                {
+                    error = "Invalid shift!";
+                }
+            }
+            else if (wednesdayhours == 8)
+            {
+                if (wednesdayStart == 9 && wednesdayEnd == 17)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.WednesdayShiftOneStart == 9 && pcSchedule.WednesdayShiftOneEnd == 13 && pcSchedule.WednesdayShiftTwoStart == 13 && pcSchedule.WednesdayShiftTwoEnd == 17 && found == false)
+                        {
+                            pcSchedule.WednesdayShiftOneStart = null;
+                            pcSchedule.WednesdayShiftOneEnd = null;
+                            pcSchedule.WednesdayShiftTwoStart = null;
+                            pcSchedule.WednesdayShiftTwoEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (wednesdayStart == 13 && wednesdayEnd == 21)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.WednesdayShiftTwoStart == 13 && pcSchedule.WednesdayShiftTwoEnd == 17 && pcSchedule.WednesdayShiftThreeStart == 17 && pcSchedule.WednesdayShiftThreeEnd == 21 && found == false)
+                        {
+                            pcSchedule.WednesdayShiftTwoStart = null;
+                            pcSchedule.WednesdayShiftTwoEnd = null;
+                            pcSchedule.WednesdayShiftThreeStart = null;
+                            pcSchedule.WednesdayShiftThreeEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+            }
+            else if (wednesdayStart == 9 && wednesdayEnd == 18)
+            {
+                foreach (var c in computers)
+                {
+                    var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                    if (pcSchedule.WednesdayShiftOneStart == 9 && pcSchedule.WednesdayShiftOneEnd == 13 && pcSchedule.WednesdayShiftTwoStart == 13 && pcSchedule.WednesdayShiftTwoEnd == 17 && pcSchedule.WednesdayShiftThreeStart == 17 && pcSchedule.WednesdayShiftThreeEnd == 18 && found == false)
+                    {
+                        pcSchedule.WednesdayShiftOneStart = null;
+                        pcSchedule.WednesdayShiftOneEnd = null;
+                        pcSchedule.WednesdayShiftTwoStart = null;
+                        pcSchedule.WednesdayShiftTwoEnd = null;
+                        pcSchedule.WednesdayShiftThreeStart = null;
+                        pcSchedule.WednesdayShiftThreeEnd = null;
+                        found = true;
+                    }
+                }
+            }
+
+            return error;
+        }
+
+        private static string ThursdayScheduleCleaner(Schedule schedule, List<Computer> computers, ScheduleView model, string error)
+        {
+            bool found = false;
+            var thursdayStart = double.Parse(model.ThursdayStart);
+            var thursdayEnd = double.Parse(model.ThursdayEnd);
+            var thursdayhours = thursdayEnd - thursdayStart;
+
+            if (thursdayhours == 4)
+            {
+                if (thursdayStart == 9 && thursdayEnd == 13)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.ThursdayShiftOneStart == 9 && pcSchedule.ThursdayShiftOneEnd == 13 && found == false)
+                        {
+                            pcSchedule.ThursdayShiftOneStart = null;
+                            pcSchedule.ThursdayShiftOneEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (thursdayStart == 13 && thursdayEnd == 17)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.ThursdayShiftTwoStart == 13 && pcSchedule.ThursdayShiftTwoEnd == 13 && found == false)
+                        {
+                            pcSchedule.ThursdayShiftTwoStart = null;
+                            pcSchedule.ThursdayShiftTwoEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (thursdayStart == 17 && thursdayEnd == 21)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.ThursdayShiftThreeStart == 13 && pcSchedule.ThursdayShiftThreeEnd == 13 && found == false)
+                        {
+                            pcSchedule.ThursdayShiftThreeStart = null;
+                            pcSchedule.ThursdayShiftThreeEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else
+                {
+                    error = "Invalid shift!";
+                }
+            }
+            else if (thursdayhours == 8)
+            {
+                if (thursdayStart == 9 && thursdayEnd == 17)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.ThursdayShiftOneStart == 9 && pcSchedule.ThursdayShiftOneEnd == 13 && pcSchedule.ThursdayShiftTwoStart == 13 && pcSchedule.ThursdayShiftTwoEnd == 17 && found == false)
+                        {
+                            pcSchedule.ThursdayShiftOneStart = null;
+                            pcSchedule.ThursdayShiftOneEnd = null;
+                            pcSchedule.ThursdayShiftTwoStart = null;
+                            pcSchedule.ThursdayShiftTwoEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (thursdayStart == 13 && thursdayEnd == 21)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.ThursdayShiftTwoStart == 13 && pcSchedule.ThursdayShiftTwoEnd == 17 && pcSchedule.ThursdayShiftThreeStart == 17 && pcSchedule.ThursdayShiftThreeEnd == 21 && found == false)
+                        {
+                            pcSchedule.ThursdayShiftTwoStart = null;
+                            pcSchedule.ThursdayShiftTwoEnd = null;
+                            pcSchedule.ThursdayShiftThreeStart = null;
+                            pcSchedule.ThursdayShiftThreeEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+            }
+            else if (thursdayStart == 9 && thursdayEnd == 18)
+            {
+                foreach (var c in computers)
+                {
+                    var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                    if (pcSchedule.ThursdayShiftOneStart == 9 && pcSchedule.ThursdayShiftOneEnd == 13 && pcSchedule.ThursdayShiftTwoStart == 13 && pcSchedule.ThursdayShiftTwoEnd == 17 && pcSchedule.ThursdayShiftThreeStart == 17 && pcSchedule.ThursdayShiftThreeEnd == 18 && found == false)
+                    {
+                        pcSchedule.ThursdayShiftOneStart = null;
+                        pcSchedule.ThursdayShiftOneEnd = null;
+                        pcSchedule.ThursdayShiftTwoStart = null;
+                        pcSchedule.ThursdayShiftTwoEnd = null;
+                        pcSchedule.ThursdayShiftThreeStart = null;
+                        pcSchedule.ThursdayShiftThreeEnd = null;
+                        found = true;
+                    }
+                }
+            }
+
+            return error;
+        }
+
+        private static string FridayScheduleCleaner(Schedule schedule, List<Computer> computers, ScheduleView model, string error)
+        {
+            bool found = false;
+            var fridayStart = double.Parse(model.FridayStart);
+            var fridayEnd = double.Parse(model.FridayEnd);
+            var fridayhours = fridayEnd - fridayStart;
+
+            if (fridayhours == 4)
+            {
+                if (fridayStart == 9 && fridayEnd == 13)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.FridayShiftOneStart == 9 && pcSchedule.FridayShiftOneEnd == 13 && found == false)
+                        {
+                            pcSchedule.FridayShiftOneStart = null;
+                            pcSchedule.FridayShiftOneEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (fridayStart == 13 && fridayEnd == 17)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.FridayShiftTwoStart == 13 && pcSchedule.FridayShiftTwoEnd == 13 && found == false)
+                        {
+                            pcSchedule.FridayShiftTwoStart = null;
+                            pcSchedule.FridayShiftTwoEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (fridayStart == 17 && fridayEnd == 21)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.FridayShiftThreeStart == 13 && pcSchedule.FridayShiftThreeEnd == 13 && found == false)
+                        {
+                            pcSchedule.FridayShiftThreeStart = null;
+                            pcSchedule.FridayShiftThreeEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else
+                {
+                    error = "Invalid shift!";
+                }
+            }
+            else if (fridayhours == 8)
+            {
+                if (fridayStart == 9 && fridayEnd == 17)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.FridayShiftOneStart == 9 && pcSchedule.FridayShiftOneEnd == 13 && pcSchedule.FridayShiftTwoStart == 13 && pcSchedule.FridayShiftTwoEnd == 17 && found == false)
+                        {
+                            pcSchedule.FridayShiftOneStart = null;
+                            pcSchedule.FridayShiftOneEnd = null;
+                            pcSchedule.FridayShiftTwoStart = null;
+                            pcSchedule.FridayShiftTwoEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (fridayStart == 13 && fridayEnd == 21)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.FridayShiftTwoStart == 13 && pcSchedule.FridayShiftTwoEnd == 17 && pcSchedule.FridayShiftThreeStart == 17 && pcSchedule.FridayShiftThreeEnd == 21 && found == false)
+                        {
+                            pcSchedule.FridayShiftTwoStart = null;
+                            pcSchedule.FridayShiftTwoEnd = null;
+                            pcSchedule.FridayShiftThreeStart = null;
+                            pcSchedule.FridayShiftThreeEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+            }
+            else if (fridayStart == 9 && fridayEnd == 18)
+            {
+                foreach (var c in computers)
+                {
+                    var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                    if (pcSchedule.FridayShiftOneStart == 9 && pcSchedule.FridayShiftOneEnd == 13 && pcSchedule.FridayShiftTwoStart == 13 && pcSchedule.FridayShiftTwoEnd == 17 && pcSchedule.FridayShiftThreeStart == 17 && pcSchedule.FridayShiftThreeEnd == 18 && found == false)
+                    {
+                        pcSchedule.FridayShiftOneStart = null;
+                        pcSchedule.FridayShiftOneEnd = null;
+                        pcSchedule.FridayShiftTwoStart = null;
+                        pcSchedule.FridayShiftTwoEnd = null;
+                        pcSchedule.FridayShiftThreeStart = null;
+                        pcSchedule.FridayShiftThreeEnd = null;
+                        found = true;
+                    }
+                }
+            }
+
+            return error;
+        }
+
+        private static string SaturdayScheduleCleaner(Schedule schedule, List<Computer> computers, ScheduleView model, string error)
+        {
+            bool found = false;
+            var saturdayStart = double.Parse(model.SaturdayStart);
+            var saturdayEnd = double.Parse(model.SaturdayEnd);
+            var saturdayhours = saturdayEnd - saturdayStart;
+
+            if (saturdayhours == 4)
+            {
+                if (saturdayStart == 9 && saturdayEnd == 13)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.SaturdayShiftOneStart == 9 && pcSchedule.SaturdayShiftOneEnd == 13 && found == false)
+                        {
+                            pcSchedule.SaturdayShiftOneStart = null;
+                            pcSchedule.SaturdayShiftOneEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (saturdayStart == 13 && saturdayEnd == 17)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.SaturdayShiftTwoStart == 13 && pcSchedule.SaturdayShiftTwoEnd == 13 && found == false)
+                        {
+                            pcSchedule.SaturdayShiftTwoStart = null;
+                            pcSchedule.SaturdayShiftTwoEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (saturdayStart == 17 && saturdayEnd == 21)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.SaturdayShiftThreeStart == 13 && pcSchedule.SaturdayShiftThreeEnd == 13 && found == false)
+                        {
+                            pcSchedule.SaturdayShiftThreeStart = null;
+                            pcSchedule.SaturdayShiftThreeEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else
+                {
+                    error = "Invalid shift!";
+                }
+            }
+            else if (saturdayhours == 8)
+            {
+                if (saturdayStart == 9 && saturdayEnd == 17)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.SaturdayShiftOneStart == 9 && pcSchedule.SaturdayShiftOneEnd == 13 && pcSchedule.SaturdayShiftTwoStart == 13 && pcSchedule.SaturdayShiftTwoEnd == 17 && found == false)
+                        {
+                            pcSchedule.SaturdayShiftOneStart = null;
+                            pcSchedule.SaturdayShiftOneEnd = null;
+                            pcSchedule.SaturdayShiftTwoStart = null;
+                            pcSchedule.SaturdayShiftTwoEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (saturdayStart == 13 && saturdayEnd == 21)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.SaturdayShiftTwoStart == 13 && pcSchedule.SaturdayShiftTwoEnd == 17 && pcSchedule.SaturdayShiftThreeStart == 17 && pcSchedule.SaturdayShiftThreeEnd == 21 && found == false)
+                        {
+                            pcSchedule.SaturdayShiftTwoStart = null;
+                            pcSchedule.SaturdayShiftTwoEnd = null;
+                            pcSchedule.SaturdayShiftThreeStart = null;
+                            pcSchedule.SaturdayShiftThreeEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+            }
+            else if (saturdayStart == 9 && saturdayEnd == 18)
+            {
+                foreach (var c in computers)
+                {
+                    var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                    if (pcSchedule.SaturdayShiftOneStart == 9 && pcSchedule.SaturdayShiftOneEnd == 13 && pcSchedule.SaturdayShiftTwoStart == 13 && pcSchedule.SaturdayShiftTwoEnd == 17 && pcSchedule.SaturdayShiftThreeStart == 17 && pcSchedule.SaturdayShiftThreeEnd == 18 && found == false)
+                    {
+                        pcSchedule.SaturdayShiftOneStart = null;
+                        pcSchedule.SaturdayShiftOneEnd = null;
+                        pcSchedule.SaturdayShiftTwoStart = null;
+                        pcSchedule.SaturdayShiftTwoEnd = null;
+                        pcSchedule.SaturdayShiftThreeStart = null;
+                        pcSchedule.SaturdayShiftThreeEnd = null;
+                        found = true;
+                    }
+                }
+            }
+
+            return error;
+        }
+
+        private static string SundayScheduleCleaner(Schedule schedule, List<Computer> computers, ScheduleView model, string error)
+        {
+            bool found = false;
+            var sundayStart = double.Parse(model.SundayStart);
+            var sundayEnd = double.Parse(model.SundayEnd);
+            var sundayhours = sundayEnd - sundayStart;
+
+            if (sundayhours == 4)
+            {
+                if (sundayStart == 9 && sundayEnd == 13)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.SundayShiftOneStart == 9 && pcSchedule.SundayShiftOneEnd == 13 && found == false)
+                        {
+                            pcSchedule.SundayShiftOneStart = null;
+                            pcSchedule.SundayShiftOneEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (sundayStart == 13 && sundayEnd == 17)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.SundayShiftTwoStart == 13 && pcSchedule.SundayShiftTwoEnd == 13 && found == false)
+                        {
+                            pcSchedule.SundayShiftTwoStart = null;
+                            pcSchedule.SundayShiftTwoEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (sundayStart == 17 && sundayEnd == 21)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.SundayShiftThreeStart == 13 && pcSchedule.SundayShiftThreeEnd == 13 && found == false)
+                        {
+                            pcSchedule.SundayShiftThreeStart = null;
+                            pcSchedule.SundayShiftThreeEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else
+                {
+                    error = "Invalid shift!";
+                }
+            }
+            else if (sundayhours == 8)
+            {
+                if (sundayStart == 9 && sundayEnd == 17)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.SundayShiftOneStart == 9 && pcSchedule.SundayShiftOneEnd == 13 && pcSchedule.SundayShiftTwoStart == 13 && pcSchedule.SundayShiftTwoEnd == 17 && found == false)
+                        {
+                            pcSchedule.SundayShiftOneStart = null;
+                            pcSchedule.SundayShiftOneEnd = null;
+                            pcSchedule.SundayShiftTwoStart = null;
+                            pcSchedule.SundayShiftTwoEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+                else if (sundayStart == 13 && sundayEnd == 21)
+                {
+                    foreach (var c in computers)
+                    {
+                        var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                        if (pcSchedule.SundayShiftTwoStart == 13 && pcSchedule.SundayShiftTwoEnd == 17 && pcSchedule.SundayShiftThreeStart == 17 && pcSchedule.SundayShiftThreeEnd == 21 && found == false)
+                        {
+                            pcSchedule.SundayShiftTwoStart = null;
+                            pcSchedule.SundayShiftTwoEnd = null;
+                            pcSchedule.SundayShiftThreeStart = null;
+                            pcSchedule.SundayShiftThreeEnd = null;
+                            found = true;
+                        }
+                    }
+                }
+            }
+            else if (sundayStart == 9 && sundayEnd == 18)
+            {
+                foreach (var c in computers)
+                {
+                    var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
+
+                    if (pcSchedule.SundayShiftOneStart == 9 && pcSchedule.SundayShiftOneEnd == 13 && pcSchedule.SundayShiftTwoStart == 13 && pcSchedule.SundayShiftTwoEnd == 17 && pcSchedule.SundayShiftThreeStart == 17 && pcSchedule.SundayShiftThreeEnd == 18 && found == false)
+                    {
+                        pcSchedule.SundayShiftOneStart = null;
+                        pcSchedule.SundayShiftOneEnd = null;
+                        pcSchedule.SundayShiftTwoStart = null;
+                        pcSchedule.SundayShiftTwoEnd = null;
+                        pcSchedule.SundayShiftThreeStart = null;
+                        pcSchedule.SundayShiftThreeEnd = null;
+                        found = true;
+                    }
                 }
             }
 

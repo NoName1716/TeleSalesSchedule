@@ -16,6 +16,7 @@
                     <th>Id</th>
                     <th>StartDate</th>
                     <th>EndDate</th>
+                    <th>Username</th>
                     <th>Working Hours</th>
                     <th>Actions</th>
                 </tr>
@@ -36,12 +37,19 @@
 
                     <td>@schedule.Id</td>
                     <td>@schedule.StartDate.Date</td>
-                    <td>@schedule.EndDate.Date</td>
+                    <td>@schedule.EndDate.Date</td>  
+                    if (schedule.Employees.FirstOrDefault() != null)
+                        {
+                           <td>@schedule.Employees.FirstOrDefault().UserName</td>
+                        }
+                        else
+                        {
+                           <td>none</td>
+                        } 
                     <td>@schedule.Hours</td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", "Schedule", new { @id = schedule.Id }, null)
                         @Html.ActionLink("Details", "Details", "Schedule", new { @id = schedule.Id }, null)
-                        @Html.ActionLink("Delete", "Delete", "Schedule", new { @id = schedule.Id }, null)
                     </td>
 
                     n++;

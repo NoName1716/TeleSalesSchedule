@@ -111,7 +111,7 @@ namespace TelesalesSchedule.Controllers
             using (var db = new TelesalesScheduleDbContext())
             {
                 var emp = db.Employees.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-                var schedules = emp.Schedules.ToList();
+                var schedules = emp.Schedules.OrderBy(s => s.StartDate).ToList();
                 return View(schedules);
             }
         }
@@ -120,7 +120,7 @@ namespace TelesalesSchedule.Controllers
         {
             using (var db = new TelesalesScheduleDbContext())
             {
-                var schedules = db.Schedules.ToList();
+                var schedules = db.Schedules.Include("Employees").OrderBy(s => s.StartDate).ToList();
                 return View(schedules);
             }
         }

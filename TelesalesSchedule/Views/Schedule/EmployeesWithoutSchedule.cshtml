@@ -1,0 +1,41 @@
+﻿@model List<TelesalesSchedule.Models.ViewModels.EmployeeSchedule>
+
+@{
+    ViewBag.Title = "ListAll";
+}
+
+@{var n = 0;}
+
+<div class="container">
+    <div class="well">
+        <h2>Employee Schedules</h2>
+
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr class="success">
+                    <th>Employee</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var employee in Model.OrderBy(e => e.FullName))
+                {
+                    if (n % 2 == 0)
+                    {
+
+                        @:<tr class="alert-active">
+                    }
+                    else
+                    {
+                        @:<tr>
+                    }
+
+                    <td>@employee.FullName</td>
+
+                    n++;
+                }
+        </tbody>
+    </table>
+</div>
+</div>

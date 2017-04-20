@@ -125,9 +125,80 @@ namespace TelesalesSchedule.Controllers
         {
             using (var db = new TelesalesScheduleDbContext())
             {
-                var schedules = db.Schedules.Where(e => e.Employee.Schedules.Count>0).OrderBy(s => s.StartDate).ToList();
+                var schedules = db.Schedules.Select(s => new DateModel
+                {
+                    StartDate = s.StartDate,
+                    EndDate = s.EndDate
+                }).Distinct().ToList();
+                
                 
                 return View(schedules);
+            }
+        }
+        public ActionResult EmployeesWithSchedules(DateModel model)
+        {
+            using (var db = new TelesalesScheduleDbContext())
+            {
+                //var schedules = db.Schedules.Where(s => s.StartDate == model.StartDate && s.EndDate == model.EndDate).Where(e => e.Employee.Schedules.Count > 0).ToList();
+
+                var employees = db.Employees.ToList();
+                var empSchedules = new List<EmployeeSchedule>();
+                foreach (var emp in employees)
+                {
+                    //emp.Schedules.Where(s => s.StartDate == model.StartDate && s.EndDate == model.EndDate)
+                    foreach (var schedule in emp.Schedules)
+                    {
+                        if(schedule.StartDate == model.StartDate && schedule.EndDate == model.EndDate)
+                        {
+                            var sch = new EmployeeSchedule
+                            {
+                                Id = schedule.Id,
+                                FullName = emp.FullName,
+                                Hours = schedule.Hours
+                            };
+                            empSchedules.Add(sch);
+                        }
+                    }
+                }
+               
+                return View(empSchedules);
+            }
+            
+        }
+
+        public ActionResult EmployeesWithoutSchedule(DateModel model)
+        {
+            using (var db = new TelesalesScheduleDbContext())
+            {
+                var employees = db.Employees.ToList();
+                var empSchedules = new List<EmployeeSchedule>();
+                foreach (var e in employees)
+                {
+                    if(e.Schedules.Count == 0)
+                    {
+                        var sch = new EmployeeSchedule
+                        {
+                            FullName = e.FullName
+                        };
+                        empSchedules.Add(sch);
+                    }
+                    else
+                    {
+                        foreach (var schedule in e.Schedules)
+                        {
+                            if (schedule == null || schedule.StartDate != model.StartDate)
+                            {
+                                var sch = new EmployeeSchedule
+                                {
+                                    FullName = e.FullName
+                                };
+                                empSchedules.Add(sch);
+                            }
+                        }
+                    }
+                    
+                }
+                return View(empSchedules);
             }
         }
 
@@ -1050,7 +1121,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.MondayShiftTwoStart == 13 && pcSchedule.MondayShiftTwoEnd == 13 && found == false)
+                        if (pcSchedule.MondayShiftTwoStart == 13 && pcSchedule.MondayShiftTwoEnd == 17 && found == false)
                         {
                             pcSchedule.MondayShiftTwoStart = null;
                             pcSchedule.MondayShiftTwoEnd = null;
@@ -1064,7 +1135,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.MondayShiftThreeStart == 13 && pcSchedule.MondayShiftThreeEnd == 13 && found == false)
+                        if (pcSchedule.MondayShiftThreeStart == 17 && pcSchedule.MondayShiftThreeEnd == 21 && found == false)
                         {
                             pcSchedule.MondayShiftThreeStart = null;
                             pcSchedule.MondayShiftThreeEnd = null;
@@ -1163,7 +1234,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.ThuesdayShiftTwoStart == 13 && pcSchedule.ThuesdayShiftTwoEnd == 13 && found == false)
+                        if (pcSchedule.ThuesdayShiftTwoStart == 13 && pcSchedule.ThuesdayShiftTwoEnd == 17 && found == false)
                         {
                             pcSchedule.ThuesdayShiftTwoStart = null;
                             pcSchedule.ThuesdayShiftTwoEnd = null;
@@ -1178,7 +1249,7 @@ namespace TelesalesSchedule.Controllers
 
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.ThuesdayShiftThreeStart == 13 && pcSchedule.ThuesdayShiftThreeEnd == 13 && found == false)
+                        if (pcSchedule.ThuesdayShiftThreeStart == 17 && pcSchedule.ThuesdayShiftThreeEnd == 21 && found == false)
                         {
                             pcSchedule.ThuesdayShiftThreeStart = null;
                             pcSchedule.ThuesdayShiftThreeEnd = null;
@@ -1279,7 +1350,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.WednesdayShiftTwoStart == 13 && pcSchedule.WednesdayShiftTwoEnd == 13 && found == false)
+                        if (pcSchedule.WednesdayShiftTwoStart == 13 && pcSchedule.WednesdayShiftTwoEnd == 17 && found == false)
                         {
                             pcSchedule.WednesdayShiftTwoStart = null;
                             pcSchedule.WednesdayShiftTwoEnd = null;
@@ -1293,7 +1364,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.WednesdayShiftThreeStart == 13 && pcSchedule.WednesdayShiftThreeEnd == 13 && found == false)
+                        if (pcSchedule.WednesdayShiftThreeStart == 17 && pcSchedule.WednesdayShiftThreeEnd == 21 && found == false)
                         {
                             pcSchedule.WednesdayShiftThreeStart = null;
                             pcSchedule.WednesdayShiftThreeEnd = null;
@@ -1392,7 +1463,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.ThursdayShiftTwoStart == 13 && pcSchedule.ThursdayShiftTwoEnd == 13 && found == false)
+                        if (pcSchedule.ThursdayShiftTwoStart == 13 && pcSchedule.ThursdayShiftTwoEnd == 17 && found == false)
                         {
                             pcSchedule.ThursdayShiftTwoStart = null;
                             pcSchedule.ThursdayShiftTwoEnd = null;
@@ -1406,7 +1477,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.ThursdayShiftThreeStart == 13 && pcSchedule.ThursdayShiftThreeEnd == 13 && found == false)
+                        if (pcSchedule.ThursdayShiftThreeStart == 17 && pcSchedule.ThursdayShiftThreeEnd == 21 && found == false)
                         {
                             pcSchedule.ThursdayShiftThreeStart = null;
                             pcSchedule.ThursdayShiftThreeEnd = null;
@@ -1505,7 +1576,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.FridayShiftTwoStart == 13 && pcSchedule.FridayShiftTwoEnd == 13 && found == false)
+                        if (pcSchedule.FridayShiftTwoStart == 13 && pcSchedule.FridayShiftTwoEnd == 17 && found == false)
                         {
                             pcSchedule.FridayShiftTwoStart = null;
                             pcSchedule.FridayShiftTwoEnd = null;
@@ -1519,7 +1590,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.FridayShiftThreeStart == 13 && pcSchedule.FridayShiftThreeEnd == 13 && found == false)
+                        if (pcSchedule.FridayShiftThreeStart == 17 && pcSchedule.FridayShiftThreeEnd == 21 && found == false)
                         {
                             pcSchedule.FridayShiftThreeStart = null;
                             pcSchedule.FridayShiftThreeEnd = null;
@@ -1618,7 +1689,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.SaturdayShiftTwoStart == 13 && pcSchedule.SaturdayShiftTwoEnd == 13 && found == false)
+                        if (pcSchedule.SaturdayShiftTwoStart == 13 && pcSchedule.SaturdayShiftTwoEnd == 17 && found == false)
                         {
                             pcSchedule.SaturdayShiftTwoStart = null;
                             pcSchedule.SaturdayShiftTwoEnd = null;
@@ -1632,7 +1703,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.SaturdayShiftThreeStart == 13 && pcSchedule.SaturdayShiftThreeEnd == 13 && found == false)
+                        if (pcSchedule.SaturdayShiftThreeStart == 17 && pcSchedule.SaturdayShiftThreeEnd == 21 && found == false)
                         {
                             pcSchedule.SaturdayShiftThreeStart = null;
                             pcSchedule.SaturdayShiftThreeEnd = null;
@@ -1731,7 +1802,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.SundayShiftTwoStart == 13 && pcSchedule.SundayShiftTwoEnd == 13 && found == false)
+                        if (pcSchedule.SundayShiftTwoStart == 13 && pcSchedule.SundayShiftTwoEnd == 17 && found == false)
                         {
                             pcSchedule.SundayShiftTwoStart = null;
                             pcSchedule.SundayShiftTwoEnd = null;
@@ -1745,7 +1816,7 @@ namespace TelesalesSchedule.Controllers
                     {
                         var pcSchedule = c.Schedules.FirstOrDefault(s => s.StartDate == schedule.StartDate && s.EndDate == schedule.EndDate);
 
-                        if (pcSchedule.SundayShiftThreeStart == 13 && pcSchedule.SundayShiftThreeEnd == 13 && found == false)
+                        if (pcSchedule.SundayShiftThreeStart == 17 && pcSchedule.SundayShiftThreeEnd == 21 && found == false)
                         {
                             pcSchedule.SundayShiftThreeStart = null;
                             pcSchedule.SundayShiftThreeEnd = null;
@@ -3629,6 +3700,8 @@ namespace TelesalesSchedule.Controllers
                 }
             }
             schedule.Hours = hours;
+            db.Schedules.Add(schedule);
+            db.SaveChanges();
             employee.Schedules.Add(schedule);
 
         }

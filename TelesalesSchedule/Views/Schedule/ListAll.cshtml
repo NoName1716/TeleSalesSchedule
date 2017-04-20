@@ -1,4 +1,4 @@
-﻿@model List<TelesalesSchedule.Models.Schedule>
+﻿@model List<TelesalesSchedule.Models.ViewModels.DateModel>
 
 @{
     ViewBag.Title = "ListAll";
@@ -8,23 +8,20 @@
 
 <div class="container">
     <div class="well">
-        <h2>Schedules</h2>
+        <h2>Employee Schedules</h2>
 
         <table class="table table-striped table-hover">
             <thead>
                 <tr class="success">
-                    <th>Id</th>
                     <th>StartDate</th>
                     <th>EndDate</th>
-                    <th>Username</th>
-                    <th>Working Hours</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-
+            
             <tbody>
 
-                @foreach (var schedule in Model)
+                @foreach (var date in Model.OrderBy(m => m.StartDate))
                 {
                     if (n % 2 == 0)
                     {
@@ -35,25 +32,13 @@
                     {
                         @:<tr>
                     }
-
-                    <td>@schedule.Id</td>
-                    <td>@schedule.StartDate.Date.ToShortDateString()</td>
-                    <td>@schedule.EndDate.Date.ToShortDateString()</td>
-                    if (schedule.Employee != null)
-                    {
-                        <td>@schedule.Employee.FullName</td>
-                    }
-                    else
-                    {
-                        <td>none</td>
-                    }
-
                     
-
-                    <td>@schedule.Hours</td>
+                    <td>@date.StartDate.Date.ToShortDateString()</td>
+                    
+                    <td>@date.EndDate.Date.ToShortDateString()</td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", "Schedule", new { @id = schedule.Id }, null)
-                        @Html.ActionLink("Details", "Details", "Schedule", new { @id = schedule.Id }, null)
+                        @Html.ActionLink("Employee With Schedule", "EmployeesWithSchedules", "Schedule", new {@startDate = date.StartDate, @endDate = date.EndDate},  null)
+                        @Html.ActionLink("Employee Without Schedule", "EmployeesWithoutSchedule", "Schedule", new { @startDate = date.StartDate, @endDate = date.EndDate }, null)
                     </td>
 
                     n++;

@@ -298,6 +298,8 @@
     <Content Include="Views\Shared\_Notifications.cshtml" />
     <Content Include="Views\Schedule\ListAll.cshtml" />
     <Content Include="Views\Schedule\Details.cshtml" />
+    <Content Include="Views\Home\PreviousWeek.cshtml" />
+    <Content Include="Views\Home\NextWeek.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -21,12 +21,14 @@ namespace TelesalesSchedule.Controllers
         }
 
         //Get: 
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Create(ScheduleView model)
         {
             using (var db = new TelesalesScheduleDbContext())
@@ -110,6 +112,7 @@ namespace TelesalesSchedule.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult ListMySchedules()
         {
             if (User.IsInRole("Admin"))
@@ -123,7 +126,7 @@ namespace TelesalesSchedule.Controllers
                 return View(schedules);
             }
         }
-
+        [Authorize(Roles="Admin")]
         public ActionResult ListAll()
         {
             using (var db = new TelesalesScheduleDbContext())
@@ -138,6 +141,7 @@ namespace TelesalesSchedule.Controllers
                 return View(schedules);
             }
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult EmployeesWithSchedules(DateModel model)
         {
             using (var db = new TelesalesScheduleDbContext())
@@ -169,6 +173,7 @@ namespace TelesalesSchedule.Controllers
             
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult EmployeesWithoutSchedule(DateModel model)
         {
             using (var db = new TelesalesScheduleDbContext())
@@ -204,7 +209,7 @@ namespace TelesalesSchedule.Controllers
                 return View(empSchedules);
             }
         }
-
+        [Authorize(Roles = "Admin")]
         public void ExportToExcel(DateModel model)
         {
             using (var db = new TelesalesScheduleDbContext())
@@ -253,6 +258,7 @@ namespace TelesalesSchedule.Controllers
 
         //
         // GET: Schedule/Details
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -506,6 +512,7 @@ namespace TelesalesSchedule.Controllers
 
         //
         // GET: Schedule/Edit
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -799,6 +806,7 @@ namespace TelesalesSchedule.Controllers
         //
         // POST: Schedule/Edit
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(ScheduleView modelView)
         {
             // TODO: something is not right... almost fixed :)

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using TelesalesSchedule.Extensions;
 using TelesalesSchedule.Models;
 
 namespace TelesalesSchedule.Controllers.Admin
 {
+    [Authorize(Roles = "Admin")]
     public class ComputerController : Controller
     {
         // GET: Computer

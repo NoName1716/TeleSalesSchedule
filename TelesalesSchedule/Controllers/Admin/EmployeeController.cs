@@ -10,6 +10,7 @@ using TelesalesSchedule.Models;
 
 namespace TelesalesSchedule.Controllers.Admin
 {
+    [Authorize(Roles = "Admin")]
     public class EmployeeController : Controller
     {
         // GET: Employee/Create

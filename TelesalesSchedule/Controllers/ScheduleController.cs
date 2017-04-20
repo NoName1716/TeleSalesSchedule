@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using TelesalesSchedule.Extensions;
 using TelesalesSchedule.Models;
 using TelesalesSchedule.Models.ViewModels;
@@ -199,6 +202,52 @@ namespace TelesalesSchedule.Controllers
                     
                 }
                 return View(empSchedules);
+            }
+        }
+
+        public void ExportToExcel(DateModel model)
+        {
+            using (var db = new TelesalesScheduleDbContext())
+            {
+
+                var employees = db.Employees.ToList();
+                var empSchedules = new List<EmployeeSchedule>();
+                foreach (var emp in employees)
+                {
+                    
+                    foreach (var schedule in emp.Schedules)
+                    {
+                        if (schedule.StartDate == model.StartDate && schedule.EndDate == model.EndDate)
+                        {
+                            var sch = new EmployeeSchedule
+                            {
+                                Id = schedule.Id,
+                                FullName = emp.FullName,
+                                Hours = schedule.Hours
+                            };
+                            empSchedules.Add(sch);
+                        }
+                    }
+                }
+
+                var grid = new GridView();
+                grid.DataSource = from data in empSchedules.OrderBy(e => e.FullName)
+                                  select new
+                                  {
+                                      FullName = data.FullName,
+                                      Hours = data.Hours
+                                  };
+                grid.DataBind();
+                Response.ClearContent();
+                Response.AddHeader("content-disposition", "attachment; filename=Employees.xls");
+                Response.ContentType = "application/ms-excel";
+                Response.ContentEncoding = System.Text.Encoding.Unicode;
+                Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble());
+                StringWriter writer = new StringWriter();
+                HtmlTextWriter htmlTextWriter = new HtmlTextWriter(writer);
+                grid.RenderControl(htmlTextWriter);
+                Response.Write(writer.ToString());
+                Response.End();
             }
         }
 

@@ -39,6 +39,7 @@
                     <td>
                         @Html.ActionLink("Employee With Schedule", "EmployeesWithSchedules", "Schedule", new {@startDate = date.StartDate, @endDate = date.EndDate},  null)
                         @Html.ActionLink("Employee Without Schedule", "EmployeesWithoutSchedule", "Schedule", new { @startDate = date.StartDate, @endDate = date.EndDate }, null)
+                        @Html.ActionLink("Export", "ExportToExcel", new { @startDate = date.StartDate, @endDate = date.EndDate }, null)
                     </td>
 
                     n++;
